@@ -1,4 +1,4 @@
-<h1 align="center">Remix Sitemap</h1>
+<h1>Remix Sitemap</h1>
 <p>
   <a href="https://www.npmjs.com/package/remix-sitemap" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/remix-sitemap.svg">
@@ -70,7 +70,10 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | autoLastmod (optional)         | Add `<lastmod/>` property. Default `true`                                             |
 | sitemapBaseFileName (optional) | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
 | optionalSegments (optional)    | possible values of optional segments                                                  |
+| alternateRefs (optional)       | multi language support by unique url. Default `[]`                                    |
 
+
+---
 
 ## Generate Sitemap for Dynamic Routes
 ```ts
@@ -85,7 +88,18 @@ export const handle: SitemapHandle = {
       return posts.map(post => {
         return { 
           loc: `/posts/${post.slug}`, 
-          lastmod: post.updatedAt 
+          lastmod: post.updatedAt,
+          // acts only in this loc
+          alternateRefs: [
+            {
+              href: 'https://en.example.com',
+              hreflang: 'en'
+            },
+            {
+              href: 'https://es.example.com',
+              hreflang: 'es'
+            }
+          ]
         }
       })
     }

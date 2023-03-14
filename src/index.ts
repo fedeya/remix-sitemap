@@ -38,17 +38,19 @@ const sitemapGenerator = async (
   );
 
   const set = `
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-    ${urls.join('\n')}
-    </urlset>
-  `;
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    ${urls.join('')}
+  </urlset>
+  `.trim();
 
   const bytes = new TextEncoder().encode(set).byteLength;
 
+  const headers = new Headers(config.headers);
+
+  headers.set('Content-Type', 'application/xml');
+  headers.set('Content-Length', bytes.toString());
+
   return new Response(set, {
-    headers: {
-      'Content-Type': 'application/xml',
-      'Content-Length': bytes.toString()
-    }
+    headers
   });
 };

@@ -5,18 +5,35 @@ import { EntryContext } from '@remix-run/server-runtime';
 export const getEntryXml = (
   config: RemixSitemapConfig,
   entry?: SitemapEntry
-) => `
-  <url>
-    <loc>${cleanDoubleSlashes(`${config.siteUrl}/${entry?.loc}`)}</loc>
-    ${
-      config.autoLastmod || entry?.lastmod
-        ? `<lastmod>${entry?.lastmod ?? new Date().toISOString()}</lastmod>`
-        : ''
-    }
-    <changefreq>${entry?.changefreq ?? config.changefreq}</changefreq>
-    <priority>${entry?.priority ?? config.priority}</priority>
-  </url>
-`;
+) => {
+  const alternateRefs = entry?.alternateRefs || config.alternateRefs;
+
+  const alternateRefsXml = alternateRefs
+    ?.map(
+      ref => `
+    <xhtml:link
+      rel="alternate"
+      hreflang="${ref.hreflang}"
+      href="${cleanDoubleSlashes(`${ref.href}/${entry?.loc}`)}"
+    />
+  `
+    )
+    .join('');
+
+  return `
+    <url>
+      <loc>${cleanDoubleSlashes(`${config.siteUrl}/${entry?.loc}`)}</loc>
+      ${alternateRefsXml ? alternateRefsXml : ''}
+      ${
+        config.autoLastmod || entry?.lastmod
+          ? `<lastmod>${entry?.lastmod ?? new Date().toISOString()}</lastmod>`
+          : ''
+      }
+      <changefreq>${entry?.changefreq ?? config.changefreq}</changefreq>
+      <priority>${entry?.priority ?? config.priority}</priority>
+    </url>
+  `.trim();
+};
 
 export const getEntry = async (
   config: RemixSitemapConfig,
@@ -83,7 +100,7 @@ export const getEntry = async (
   if (optionalPaths.length === 0) {
     if (!entries) return getEntryXml(config, { loc: path! });
 
-    return entries.map(entry => getEntryXml(config, entry)).join(`\n`);
+    return entries.map(entry => getEntryXml(config, entry)).join('');
   }
 
   const xml = optionalPaths.map(optionalPath => {
@@ -101,14 +118,12 @@ export const getEntry = async (
           loc: `${parentPath}/${path}`
         });
       } else {
-        return entries
-          .map(entry =>
-            getEntryXml(config, {
-              ...entry,
-              loc: `${parentPath}/${entry.loc}`
-            })
-          )
-          .join('\n');
+        return entries.map(entry =>
+          getEntryXml(config, {
+            ...entry,
+            loc: `${parentPath}/${entry.loc}`
+          })
+        );
       }
     });
 
@@ -139,8 +154,8 @@ export const getEntry = async (
       });
     }
 
-    return finalEntry.join(`\n`);
+    return finalEntry;
   });
 
-  return xml.join('\n');
+  return xml.flat().join('');
 };
