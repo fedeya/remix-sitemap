@@ -5,11 +5,12 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "prepublish": "npm run build",
     "dev": "tsc -w"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@remix-run/server-runtime": "^1.14.1",
     "@types/node": "^18.15.2",
