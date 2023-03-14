@@ -1,6 +1,7 @@
 import type { EntryContext } from '@remix-run/server-runtime';
 import type { RemixSitemapConfig } from './types';
 import { getEntry } from './utils';
+import { isEqual } from 'ufo';
 
 export type { SitemapHandle, RemixSitemapConfig } from './types';
 
@@ -20,7 +21,7 @@ export const createSitemapGenerator = (config: RemixSitemapConfig) => {
     isSitemapUrl(request: Request) {
       const url = new URL(request.url);
 
-      return url.pathname === `/${defaultConfig.sitemapBaseFileName}.xml`;
+      return isEqual(url.pathname, `/${defaultConfig.sitemapBaseFileName}.xml`);
     }
   };
 };
