@@ -36,11 +36,18 @@ export const getEntry = async (
 
   const entry = modules[key];
 
-  const handle: Handle = entry.handle?.sitemap || {};
+  const sitemapHandle: Handle = entry?.handle?.sitemap || {};
+
+  const handle: Handle = {
+    ...sitemapHandle,
+    addOptionalSegments: sitemapHandle.addOptionalSegments ?? true
+  };
 
   if (handle.exclude) return '';
 
-  const parents = routeManifest.parentId?.split('/');
+  const parents = routeManifest.id?.split('/').slice(0, -1);
+
+  const parentId = parents.join('/');
 
   const path = routeManifest.index ? '' : routeManifest.path;
 
@@ -48,7 +55,7 @@ export const getEntry = async (
 
   const optionalPathValues: Record<string, string[]> = {};
 
-  if (parents && parents.length > 1) {
+  if (handle.addOptionalSegments && parents && parents.length > 1) {
     parents?.forEach((partialId, index) => {
       if (index === 0) return [];
 
@@ -62,9 +69,10 @@ export const getEntry = async (
 
       const handle: Handle = module?.handle?.sitemap || {};
 
-      if (handle.values) {
-        optionalPathValues[partialId] = handle.values;
-      }
+      const values =
+        handle.values || (config.optionalSegments || {})[partialId];
+
+      if (values) optionalPathValues[partialId] = values;
     });
   }
 
@@ -75,7 +83,7 @@ export const getEntry = async (
     : null;
 
   if (optionalPaths.length === 0) {
-    if (!entries) return getEntryXml(config, { route: path });
+    if (!entries) return getEntryXml(config, { route: path! });
 
     return entries.map(entry => getEntryXml(config, entry)).join(`\n`);
   }
@@ -84,46 +92,53 @@ export const getEntry = async (
     const pathValues = optionalPathValues[optionalPath];
 
     const finalEntry = pathValues.map(value => {
-      const parentPath = routeManifest.parentId
+      const parentPath = parentId
         ?.replace(optionalPath, value)
-        .split('/');
-
-      parentPath?.shift();
-
-      const joinedPath = parentPath?.join('/');
+        .split('/')
+        .splice(1)
+        .join('/');
 
       if (!entries) {
         return getEntryXml(config, {
-          route: `${joinedPath}/${path}`
+          route: `${parentPath}/${path}`
         });
       } else {
         return entries
           .map(entry =>
             getEntryXml(config, {
               ...entry,
-              route: `${joinedPath}/${entry.route}`
+              route: `${parentPath}/${entry.route}`
             })
           )
           .join('\n');
       }
     });
 
-    const pathWithoutOptional = routeManifest.parentId
+    const pathWithoutOptional = parentId
       ?.replace(optionalPath, '')
-      .split('/');
+      .split('/')
+      .splice(1)
+      .join('/');
 
-    pathWithoutOptional?.shift();
-
-    const joinedPathWithoutOptional = pathWithoutOptional?.join('/');
-
-    const fullPath = `${joinedPathWithoutOptional}/${path}`;
+    const fullPath = `${pathWithoutOptional}/${path}`;
 
     if (fullPath && !fullPath.includes(':')) {
       finalEntry.push(
         getEntryXml(config, {
-          route: `${joinedPathWithoutOptional}/${path}`
+          route: fullPath
         })
       );
+    }
+
+    if (entries) {
+      entries.forEach(entry => {
+        finalEntry.push(
+          getEntryXml(config, {
+            ...entry,
+            route: `${pathWithoutOptional}/${entry.route}`
+          })
+        );
+      });
     }
 
     return finalEntry.join(`\n`);

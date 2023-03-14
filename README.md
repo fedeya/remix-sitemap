@@ -59,7 +59,7 @@ export default async function handleRequest(
 }
 ```
 
-### Config
+## Config
 This library is a little inspired in [next-sitemap](https://www.npmjs.com/package/next-sitemap) so the config is pretty much the same
 
 | Property                       | Description                                                                           |
@@ -69,9 +69,10 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | priority (optional)            | Priority. Default `0.7`                                                               |
 | autoLastmod (optional)         | Add `<lastmod/>` property. Default `true`                                             |
 | sitemapBaseFileName (optional) | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
+| optionalSegments (optional)    | possible values of optional segments                                                  |
 
 
-### Generate Sitemap for Dynamic Routes
+## Generate Sitemap for Dynamic Routes
 ```ts
 // app/routes/posts.$slug.tsx
 import type { SitemapHandle } from 'remix-sitemap';
@@ -92,7 +93,7 @@ export const handle: SitemapHandle = {
 };
 ```
 
-### Exclude Route
+## Exclude Route
 ```ts
 // app/routes/private.tsx
 import type { SitemapHandle } from 'remix-sitemap';
@@ -104,7 +105,7 @@ export const handle: SitemapHandle = {
 };
 ```
 
-### Usage with Optional Segments
+## Usage with Optional Segments
 with optional segments layouts to has a static data like the languages you can add `values` to sitemap config
 ```ts
 // app/routes/($lang).tsx
@@ -123,7 +124,29 @@ routes/($lang)/blog.tsx -> https://example.com/blog
                         -> https://example.com/en/blog
                         -> https://example.com/es/blog
 ```
-this also works with dynamic routes within the optional segment, with the values defined in the optional segment route you can avoid to returning the repeated entries with the optional segmenet in your `generateEntries`
+this also works with dynamic routes within the optional segment, with the values defined in the optional segment route you can avoid to returning the repeated entries with the optional segments in your `generateEntries`
+
+also if you don't have a layout for the optional segment, you can define it in the global config with the `optionalSegments` property
+```ts
+const { isSitemapUrl, sitemap } = createSitemapGenerator({
+  siteUrl: 'https://example.com',
+  optionalSegments: {
+    '($lang)': ['en', 'es']
+  }
+}) 
+```
+
+### How to disable it
+For avoid the default behaviour of the `optionalSegments` you can disable it with the `addOptionalSegments` property on the `handle`
+```ts
+// app/routes/($lang)/blog.$slug.tsx
+export const handle: SitemapHandle = {
+  sitemap: {
+    addOptionalSegments: false
+  }
+}
+```
+
 
 ## Author
 
