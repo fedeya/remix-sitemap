@@ -9,7 +9,11 @@
     "dev": "tsc -w"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Federico Minaya",
+    "email": "hello@fedeminaya.com",
+    "url": "https://fedeminaya.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "@remix-run/server-runtime": "^1.14.1",
@@ -23,7 +27,7 @@
     "ufo": "^1.1.1"
   },
   "types": "./dist/index.d.ts",
-  "description": "",
+  "description": "Sitemap generator for Remix applications",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fedeya/remix-sitemap.git"
