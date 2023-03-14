@@ -43,9 +43,12 @@ const sitemapGenerator = async (
     </urlset>
   `;
 
+  const bytes = new TextEncoder().encode(set).byteLength;
+
   return new Response(set, {
     headers: {
-      'Content-Type': 'application/xml'
+      'Content-Type': 'application/xml',
+      'Content-Length': bytes.toString()
     }
   });
 };
