@@ -33,9 +33,7 @@ const sitemapGenerator = async (
   const modules = context.routeModules;
 
   const urls = await Promise.all(
-    Object.keys(modules).map(key =>
-      getEntry(config, key, modules, context.manifest, request)
-    )
+    Object.keys(modules).map(key => getEntry(config, key, context, request))
   );
 
   const set = `

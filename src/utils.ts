@@ -1,11 +1,6 @@
-import {
-  AssetsManifest,
-  Handle,
-  RemixSitemapConfig,
-  RouteModules,
-  SitemapEntry
-} from './types';
+import { Handle, RemixSitemapConfig, SitemapEntry } from './types';
 import { cleanDoubleSlashes } from 'ufo';
+import { EntryContext } from '@remix-run/server-runtime';
 
 export const getEntryXml = (
   config: RemixSitemapConfig,
@@ -26,13 +21,14 @@ export const getEntryXml = (
 export const getEntry = async (
   config: RemixSitemapConfig,
   key: string,
-  modules: RouteModules,
-  manifest: AssetsManifest,
+  context: EntryContext,
   request: Request
 ) => {
-  const routeManifest = manifest.routes[key];
+  const routeManifest = context.manifest.routes[key];
 
   if (routeManifest.id === 'root') return '';
+
+  const modules = context.routeModules;
 
   const entry = modules[key];
 
