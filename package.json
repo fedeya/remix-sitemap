@@ -1,0 +1,26 @@
+{
+  "name": "remix-sitemap",
+  "version": "1.0.0",
+  "private": false,
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@remix-run/server-runtime": "^1.14.1",
+    "@types/node": "^18.15.2",
+    "typescript": "^4.9.5"
+  },
+  "peerDependencies": {
+    "@remix-run/server-runtime": "^1.14.1"
+  },
+  "dependencies": {
+    "ufo": "^1.1.1"
+  },
+  "types": "./dist/index.d.ts",
+  "description": ""
+}
