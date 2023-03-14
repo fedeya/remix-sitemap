@@ -66,7 +66,8 @@ export const getEntry = async (
 
   const path = routeManifest.index ? '' : routeManifest.path;
 
-  if (path?.includes(':') && !handle.generateEntries) return '';
+  if ((path?.includes(':') || path?.includes('*')) && !handle.generateEntries)
+    return '';
 
   const optionalPathValues: Record<string, string[]> = {};
 
