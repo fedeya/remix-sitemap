@@ -7,7 +7,7 @@ export const getEntryXml = (
   entry?: SitemapEntry
 ) => `
   <url>
-    <loc>${cleanDoubleSlashes(`${config.siteUrl}/${entry?.route}`)}</loc>
+    <loc>${cleanDoubleSlashes(`${config.siteUrl}/${entry?.loc}`)}</loc>
     ${
       config.autoLastmod || entry?.lastmod
         ? `<lastmod>${entry?.lastmod ?? new Date().toISOString()}</lastmod>`
@@ -81,7 +81,7 @@ export const getEntry = async (
     : null;
 
   if (optionalPaths.length === 0) {
-    if (!entries) return getEntryXml(config, { route: path! });
+    if (!entries) return getEntryXml(config, { loc: path! });
 
     return entries.map(entry => getEntryXml(config, entry)).join(`\n`);
   }
@@ -98,14 +98,14 @@ export const getEntry = async (
 
       if (!entries) {
         return getEntryXml(config, {
-          route: `${parentPath}/${path}`
+          loc: `${parentPath}/${path}`
         });
       } else {
         return entries
           .map(entry =>
             getEntryXml(config, {
               ...entry,
-              route: `${parentPath}/${entry.route}`
+              loc: `${parentPath}/${entry.loc}`
             })
           )
           .join('\n');
@@ -123,7 +123,7 @@ export const getEntry = async (
     if (fullPath && !fullPath.includes(':')) {
       finalEntry.push(
         getEntryXml(config, {
-          route: fullPath
+          loc: fullPath
         })
       );
     }
@@ -133,7 +133,7 @@ export const getEntry = async (
         finalEntry.push(
           getEntryXml(config, {
             ...entry,
-            route: `${pathWithoutOptional}/${entry.route}`
+            loc: `${pathWithoutOptional}/${entry.loc}`
           })
         );
       });

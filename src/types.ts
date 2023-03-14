@@ -21,7 +21,7 @@ export type RouteModules = EntryContext['routeModules'];
 export type AssetsManifest = EntryContext['manifest'];
 
 export interface SitemapEntry {
-  route: string;
+  loc: string;
   changefreq?: string;
   priority?: number;
   lastmod?: string;

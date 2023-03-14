@@ -84,7 +84,7 @@ export const handle: SitemapHandle = {
       
       return posts.map(post => {
         return { 
-          route: `/posts/${post.slug}`, 
+          loc: `/posts/${post.slug}`, 
           lastmod: post.updatedAt 
         }
       })
