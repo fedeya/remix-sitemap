@@ -34,17 +34,7 @@ const sitemapGenerator = async (
 
   const urls = await Promise.all(
     Object.keys(modules).map(key =>
-      getEntry(
-        {
-          ...config,
-          autoLastmod: config.autoLastmod ?? true,
-          changefreq: config.changefreq ?? 'daily',
-          priority: config.priority ?? 0.7
-        },
-        key,
-        modules,
-        context.manifest
-      )
+      getEntry(config, key, modules, context.manifest, request)
     )
   );
 

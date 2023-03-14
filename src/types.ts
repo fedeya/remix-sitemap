@@ -27,5 +27,5 @@ export interface SitemapHandle {
 export interface Handle {
   values?: string[];
   exclude?: boolean;
-  generateEntries?(): Promise<SitemapEntry[]>;
+  generateEntries?(request: Request): Promise<SitemapEntry[]>;
 }

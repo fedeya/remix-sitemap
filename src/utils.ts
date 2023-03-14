@@ -27,7 +27,8 @@ export const getEntry = async (
   config: RemixSitemapConfig,
   key: string,
   modules: RouteModules,
-  manifest: AssetsManifest
+  manifest: AssetsManifest,
+  request: Request
 ) => {
   const routeManifest = manifest.routes[key];
 
@@ -70,7 +71,7 @@ export const getEntry = async (
   const optionalPaths = Object.keys(optionalPathValues);
 
   const entries = handle.generateEntries
-    ? await handle.generateEntries()
+    ? await handle.generateEntries(request)
     : null;
 
   if (optionalPaths.length === 0) {
