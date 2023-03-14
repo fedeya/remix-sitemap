@@ -39,6 +39,8 @@ export const getEntry = async (
     addOptionalSegments: sitemapHandle.addOptionalSegments ?? true
   };
 
+  if (!entry.default && !handle.generateEntries) return '';
+
   if (handle.exclude) return '';
 
   const parents = routeManifest.id?.split('/').slice(0, -1);
