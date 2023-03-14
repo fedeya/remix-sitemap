@@ -22,5 +22,13 @@
     "ufo": "^1.1.1"
   },
   "types": "./dist/index.d.ts",
-  "description": ""
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedeya/remix-sitemap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fedeya/remix-sitemap/issues"
+  },
+  "homepage": "https://github.com/fedeya/remix-sitemap#readme"
 }
