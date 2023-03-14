@@ -121,6 +121,7 @@ export const handle: SitemapHandle = {
 
 ## Usage with Optional Segments
 with optional segments layouts to has a static data like the languages you can add `values` to sitemap config
+> this is just an example for multiple language it is recommended to use the `alternateRefs` property
 ```ts
 // app/routes/($lang).tsx
 import type { SitemapHandle } from 'remix-sitemap';
