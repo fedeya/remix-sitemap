@@ -13,7 +13,7 @@ export interface RemixSitemapConfig {
   sitemapBaseFileName?: string;
   alternateRefs?: AlternateRef[];
   optionalSegments?: Record<string, string[]>;
-  headers?: Headers | Record<string, string>;
+  headers?: HeadersInit;
 }
 
 export interface SitemapEntry {
