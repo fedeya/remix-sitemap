@@ -3,6 +3,8 @@ import type { RemixSitemapConfig } from './lib/types';
 import { sitemapResponse } from './sitemap';
 import { isSitemapUrl } from './utils/validations';
 
+export { SitemapHandle, RemixSitemapConfig } from '~/lib/types';
+
 export const createSitemapGenerator = (config: RemixSitemapConfig) => {
   const defaultConfig = {
     ...config,
