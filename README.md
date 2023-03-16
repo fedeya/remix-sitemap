@@ -129,10 +129,10 @@ export const handle: SitemapHandle = {
       return [
         {
           loc: '/news/random-news',
-          images: [{ loc: 'https://example.com/example.jpg' }]
+          images: [{ loc: 'https://example.com/example.jpg' }],
           news: [{
             title: 'Random News',
-            date: '2023-03-15'
+            date: '2023-03-15',
             publication: {
               name: 'The Example Times',
               language: 'en'
