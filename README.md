@@ -120,8 +120,8 @@ export const handle: SitemapHandle = {
 ```
 
 ## Google: News, Image and Video
-Url set can contain additional sitemaps defined by google. These are Google [news](https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap) sitemap, [image](https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps) or [video](https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps).
-You add these sitemaps with the properties in `generateEntries`
+Url set can contain additional sitemaps defined by google. These are Google [news](https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap), [image](https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps) or [video](https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps).
+You can add these sitemaps in `generateEntries`
 ```ts
 export const handle: SitemapHandle = {
   sitemap: {
@@ -130,16 +130,14 @@ export const handle: SitemapHandle = {
         {
           loc: '/news/random-news',
           images: [{ loc: 'https://example.com/example.jpg' }]
-          news: [
-            {
-              title: 'Random News',
-              date: '2023-03-15'
-              publication: {
-                name: 'The Example Times',
-                language: 'en'
-              }
+          news: [{
+            title: 'Random News',
+            date: '2023-03-15'
+            publication: {
+              name: 'The Example Times',
+              language: 'en'
             }
-          ]
+          }]
         }
       ]
     }
