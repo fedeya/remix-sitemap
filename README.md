@@ -28,7 +28,7 @@ npm i remix-sitemap
 ```
 
 ## Usage
-For generate the sitemap we have two ways.
+For generate the sitemap we have 2 ways.
 ### 1. Runtime Generation
 ```ts
 // entry.server.tsx
@@ -67,6 +67,8 @@ export default async function handleRequest(
 Create a `remix-sitemap.config.js` file at the project root
 ```ts
 // remix-sitemap.config.js
+
+/** @type {import('remix-sitemap').RemixSitemapConfig} */
 module.exports = {
   siteUrl: 'https://example.com',
   // configure other things here
