@@ -12,10 +12,13 @@ type RoutesManifest = EntryContext['manifest']['routes'];
 type RouteModules = EntryContext['routeModules'];
 
 const getAllRouteModules = (routes: RoutesManifest) => {
-  const modules: EntryContext['routeModules'] = {};
+  const modules: RouteModules = {};
 
   Object.keys(routes).forEach(route => {
-    modules[route] = routes[route].module as unknown as RouteModules[string];
+    const routeManifest = routes[route];
+
+    modules[routeManifest.id] =
+      routeManifest.module as unknown as RouteModules[string];
   });
 
   return modules;

@@ -17,7 +17,8 @@
 
 ### Features
 
-- Generate Sitemap in Runtime
+- Runtime Generation
+- Build time Generation (Experimental)
 - Handle Static Optional Paths
 
 ## Installation
@@ -27,11 +28,13 @@ npm i remix-sitemap
 ```
 
 ## Usage
+For generate the sitemap we have two ways.
+### 1. Runtime Generation
 ```ts
 // entry.server.tsx
 import { createSitemapGenerator } from 'remix-sitemap';
 
-// setup the generator
+// Step 1. setup the generator
 const { isSitemapUrl, sitemap } = createSitemapGenerator({
   siteUrl: 'https://example.com'
 })
@@ -42,7 +45,7 @@ export default async function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  //  
+  // Step 2. add the sitemap response
   if (isSitemapUrl(request)) 
     return await sitemap(request, remixContext);
 
@@ -58,6 +61,29 @@ export default async function handleRequest(
   });
 }
 ```
+### 2. Build time Generation (Experimental)
+> Right now this doesn't work with all server build targets like Cloudflare
+
+Create a `remix-sitemap.config.js` file at the project root
+```ts
+// remix-sitemap.config.js
+module.exports = {
+  siteUrl: 'https://example.com',
+  // configure other things here
+}
+```
+Add a script using `remix-sitemap` to `package.json` to run after build.
+
+For example if you are using `npm-run-all`
+```json
+{
+  "scripts": {
+    "build": "npm-run-all build:*",
+    "build:remix": "remix build",
+    "build:sitemap": "remix-sitemap" 
+  }
+}
+```
 
 ## Config
 This library is a little inspired in [next-sitemap](https://www.npmjs.com/package/next-sitemap) so the config is pretty much the same
@@ -71,11 +97,15 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | sitemapBaseFileName (optional) | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
 | optionalSegments (optional)    | possible values of optional segments                                                  |
 | alternateRefs (optional)       | multi language support by unique url. Default `[]`                                    |
+| sourceDir                      | The build directory. Default `"build"`                                                |
+| outDir                         | The directory to create the sitemaps files. Default `"public"`                        |
+
 
 
 ---
 
 ## Generate Sitemap for Dynamic Routes
+> If you are using build time generation, the request in `generateEntries` will be empty
 ```ts
 // app/routes/posts.$slug.tsx
 import type { SitemapHandle } from 'remix-sitemap';
