@@ -4,6 +4,7 @@ import type { RemixSitemapConfig } from '../lib/types';
 import type { EntryContext } from '@remix-run/server-runtime';
 import { getSitemap } from '../sitemap';
 import fs from 'fs/promises';
+import './polyfill.js';
 
 const dir = process.cwd();
 
@@ -66,7 +67,7 @@ async function main() {
     sitemap
   );
 
-  console.log('sitemap generated successfully :D');
+  console.log('✨ Sitemap generated successfully');
 }
 
 main();
