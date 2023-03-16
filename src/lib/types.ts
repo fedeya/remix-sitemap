@@ -42,6 +42,10 @@ export interface RemixSitemapConfig {
 
   optionalSegments?: Record<string, string[]>;
 
+  sourceDir?: string;
+
+  outDir?: string;
+
   /**
    * Headers to be added to the sitemap response.
    */
