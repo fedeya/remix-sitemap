@@ -25,7 +25,7 @@ export interface RemixSitemapConfig {
    * Change frequency of all pages.
    * @default 'daily'
    */
-  changefreq: ChangeFreq;
+  changefreq?: ChangeFreq;
 
   /**
    * Priority of all pages.
