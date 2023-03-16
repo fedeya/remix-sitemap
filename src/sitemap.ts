@@ -1,5 +1,5 @@
 import type { EntryContext } from '@remix-run/server-runtime';
-import type { RemixSitemapConfig } from '~/lib/types';
+import type { RemixSitemapConfig } from './lib/types';
 import { getOptionalSegmentData, getRouteData } from './utils/data';
 import { getOptionalSegmentEntries } from './utils/entries';
 import { isValidEntry } from './utils/validations';
