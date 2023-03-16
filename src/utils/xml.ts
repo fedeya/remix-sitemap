@@ -146,7 +146,7 @@ export const getUrlXml = (entry: SitemapEntry) => {
     ...(entry.videos || []).map(getVideo)
   ].filter(truthy);
 
-  return xml({ url }, { indent: '  ' });
+  return xml({ url });
 };
 
 export type GetEntryXmlParams = {

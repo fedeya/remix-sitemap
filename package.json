@@ -1,7 +1,10 @@
 {
   "name": "remix-sitemap",
-  "version": "1.2.1",
+  "version": "1.2.2-canary.0",
   "private": false,
+  "bin": {
+    "remix-sitemap": "./dist/bin/index.js"
+  },
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

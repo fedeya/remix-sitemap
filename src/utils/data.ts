@@ -4,7 +4,7 @@ import { Handle, RemixSitemapConfig, SitemapHandle } from '../lib/types';
 export function getRouteData(route: string, context: EntryContext) {
   const manifest = context.manifest.routes[route];
 
-  const module = context.routeModules[route];
+  const module = context.routeModules[manifest.id];
 
   const handle: SitemapHandle = module?.handle || {};
 
