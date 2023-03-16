@@ -18,13 +18,15 @@
   "devDependencies": {
     "@remix-run/server-runtime": "^1.14.1",
     "@types/node": "^18.15.2",
+    "@types/xml": "^1.0.8",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "@remix-run/server-runtime": "^1.14.1"
   },
   "dependencies": {
-    "ufo": "^1.1.1"
+    "ufo": "^1.1.1",
+    "xml": "^1.0.1"
   },
   "types": "./dist/index.d.ts",
   "description": "Sitemap generator for Remix applications",

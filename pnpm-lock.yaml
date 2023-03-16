@@ -3,15 +3,19 @@ lockfileVersion: 5.4
 specifiers:
   '@remix-run/server-runtime': ^1.14.1
   '@types/node': ^18.15.2
+  '@types/xml': ^1.0.8
   typescript: ^4.9.5
   ufo: ^1.1.1
+  xml: ^1.0.1
 
 dependencies:
   ufo: 1.1.1
+  xml: 1.0.1
 
 devDependencies:
   '@remix-run/server-runtime': 1.14.1
   '@types/node': 18.15.2
+  '@types/xml': 1.0.8
   typescript: 4.9.5
 
 packages:
@@ -58,6 +62,12 @@ packages:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
     dev: true
 
+  /@types/xml/1.0.8:
+    resolution: {integrity: sha512-IptEZBtDwSPayCP8FmbordhAdjdxsif4zH29xTbBRacZeCHFHZp8OxyG1/CrS8AS0MziJUPTGWCTKbYtvHGYPg==}
+    dependencies:
+      '@types/node': 18.15.2
+    dev: true
+
   /@web3-storage/multipart-parser/1.0.0:
     resolution: {integrity: sha512-BEO6al7BYqcnfX15W2cnGR+Q566ACXAT9UQykORCWW80lmkpWsnEob6zJS1ZVBKsSJC8+7vJkHwlp+lXG1UCdw==}
     dev: true
@@ -88,4 +98,8 @@ packages:
 
   /ufo/1.1.1:
     resolution: {integrity: sha512-MvlCc4GHrmZdAllBc0iUDowff36Q9Ndw/UzqmEKyrfSzokTd9ZCy1i+IIk5hrYKkjoYVQyNbrw7/F8XJ2rEwTg==}
+    dev: false
+
+  /xml/1.0.1:
+    resolution: {integrity: sha512-huCv9IH9Tcf95zuYCsQraZtWnJvBtLVE0QHMOs8bWyZAFZNDcYjsPq1nEx8jKA9y+Beo9v+7OBPRisQTjinQMw==}
     dev: false

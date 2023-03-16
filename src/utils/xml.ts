@@ -4,27 +4,37 @@ import type {
   AlternateRef,
   RemixSitemapConfig
 } from '~/lib/types';
+import xml from 'xml';
+import { truthy } from './truthy';
 
-export const getAlternateRefXml = (alternateRefs: AlternateRef) => /* xml */ `
-  <xhtml:link
-    rel="alternate"
-    hreflang="${alternateRefs.hreflang}"
-    href="${cleanDoubleSlashes(alternateRefs.href)}"
-  />
-`;
+export const getAlternateRef = (alternateRefs: AlternateRef) => ({
+  'xhtml:link': {
+    _attr: {
+      rel: 'alternate',
+      hreflang: alternateRefs.hreflang,
+      href: cleanDoubleSlashes(alternateRefs.href)
+    }
+  }
+});
 
-export const getAlternateRefsXml = (alternateRefs: AlternateRef[]) =>
-  alternateRefs.map(getAlternateRefXml).join('');
-
-export const getUrlXml = (url: SitemapEntry) => /* xml */ `
-  <url>
-    <loc>${cleanDoubleSlashes(url.loc)}</loc>
-    ${getAlternateRefsXml(url.alternateRefs ?? [])}
-    ${url.lastmod ? `<lastmod>${url.lastmod}</lastmod>` : ''}
-    ${url.changefreq ? `<changefreq>${url.changefreq}</changefreq>` : ''}
-    ${url.priority ? `<priority>${url.priority}</priority>` : ''}
-  </url>
-`;
+export const getUrlXml = (entry: SitemapEntry) =>
+  xml({
+    url: [
+      {
+        loc: cleanDoubleSlashes(entry.loc)
+      },
+      entry.lastmod && {
+        lastmod: entry.lastmod
+      },
+      entry.changefreq && {
+        changefreq: entry.changefreq
+      },
+      entry.priority && {
+        priority: entry.priority
+      },
+      ...(entry.alternateRefs || []).map(getAlternateRef)
+    ].filter(truthy)
+  });
 
 export type GetEntryXmlParams = {
   config: RemixSitemapConfig;
