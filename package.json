@@ -7,7 +7,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build",
     "prepublishOnly": "npm run build",
     "dev": "tsc -w"
   },
@@ -28,6 +28,7 @@
     "@remix-run/server-runtime": "^1.14.1"
   },
   "dependencies": {
+    "isomorphic-fetch": "^3.0.0",
     "ufo": "^1.1.1",
     "xml": "^1.0.1"
   },
