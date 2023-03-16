@@ -119,6 +119,33 @@ export const handle: SitemapHandle = {
 };
 ```
 
+## Google: News, Image and Video
+Url set can contain additional sitemaps defined by google. These are Google [news](https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap), [image](https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps) or [video](https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps).
+You can add these sitemaps in `generateEntries`
+```ts
+export const handle: SitemapHandle = {
+  sitemap: {
+    async generateEntries() {
+      return [
+        {
+          loc: '/news/random-news',
+          images: [{ loc: 'https://example.com/example.jpg' }],
+          news: [{
+            title: 'Random News',
+            date: '2023-03-15',
+            publication: {
+              name: 'The Example Times',
+              language: 'en'
+            }
+          }]
+        }
+      ]
+    }
+  }
+}
+```
+
+
 ## Usage with Optional Segments
 with optional segments layouts to has a static data like the languages you can add `values` to sitemap config
 > this is just an example for multiple language it is recommended to use the `alternateRefs` property
