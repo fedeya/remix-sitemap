@@ -1,5 +1,5 @@
 import { EntryContext } from '@remix-run/server-runtime';
-import { Handle, RemixSitemapConfig, SitemapHandle } from '~/lib/types';
+import { Handle, RemixSitemapConfig, SitemapHandle } from '../lib/types';
 
 export function getRouteData(route: string, context: EntryContext) {
   const manifest = context.manifest.routes[route];
