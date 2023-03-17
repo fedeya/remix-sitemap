@@ -46,8 +46,6 @@ export interface RemixSitemapConfig {
 
   outDir?: string;
 
-  build?: any;
-
   /**
    * Headers to be added to the sitemap response.
    */
