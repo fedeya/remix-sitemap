@@ -42,8 +42,6 @@ export interface RemixSitemapConfig {
 
   optionalSegments?: Record<string, string[]>;
 
-  sourcePath?: string;
-
   outDir?: string;
 
   /**
