@@ -62,7 +62,6 @@ export default async function handleRequest(
 }
 ```
 ### 2. Build time Generation (Experimental)
-> Right now this doesn't work with all server build targets like Cloudflare
 
 Create a `remix-sitemap.config.js` file at the project root
 ```ts
