@@ -1,6 +1,6 @@
 {
   "name": "remix-sitemap",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "private": false,
   "bin": {
     "remix-sitemap": "./dist/bin/index.js"
