@@ -1,69 +1,92 @@
 #!/usr/bin/env node
-import path from 'path';
-import type { RemixSitemapConfig } from '../lib/types';
 import type { EntryContext } from '@remix-run/server-runtime';
-import { getSitemap } from '../sitemap';
-import fs from 'fs/promises';
+import path from 'path';
+import fs from 'fs';
+import { getSitemap } from '../sitemap.js';
+import { readConfig } from '@remix-run/dev/dist/config';
+import esbuild from 'esbuild';
+import requireFromString from 'require-from-string';
+
 import './polyfill.js';
+import { getConfig } from '../lib/config.js';
 
-const dir = process.cwd();
-
-type RoutesManifest = EntryContext['manifest']['routes'];
+const dir = path.resolve(process.cwd());
 
 type RouteModules = EntryContext['routeModules'];
 
-const getAllRouteModules = (routes: RoutesManifest) => {
+export const getRoutesAndModules = async () => {
+  const config = await readConfig(process.env.REMIX_ROOT || dir);
+
+  const routes = config.routes;
+
   const modules: RouteModules = {};
 
-  Object.keys(routes).forEach(route => {
-    const routeManifest = routes[route];
+  await Promise.all(
+    Object.keys(routes).map(async key => {
+      const route = routes[key];
 
-    modules[routeManifest.id] =
-      routeManifest.module as unknown as RouteModules[string];
-  });
+      const file = path.resolve(config.appDirectory, route.file);
 
-  return modules;
+      const result = await esbuild.build({
+        entryPoints: [file],
+        platform: 'neutral',
+        format: 'cjs',
+        write: false,
+        loader: {
+          '.js': 'jsx'
+        },
+        logLevel: 'silent'
+      });
+
+      const module = requireFromString(result.outputFiles[0].text);
+
+      modules[key] = module;
+    })
+  );
+
+  return {
+    routes,
+    modules
+  };
+};
+
+const findConfig = () => {
+  const configPath = path.join(dir, 'remix-sitemap.config.js');
+
+  if (fs.existsSync(configPath)) return configPath;
 };
 
 async function main() {
-  const config = require(path.join(
-    dir,
-    'remix-sitemap.config.js'
-  )) as RemixSitemapConfig;
+  const configPath = findConfig();
 
-  const defaultConfig = {
-    ...config,
-    autoLastmod: config.autoLastmod ?? true,
-    changefreq: config.changefreq ?? 'daily',
-    priority: config.priority ?? 0.7,
-    sitemapBaseFileName: config.sitemapBaseFileName ?? 'sitemap',
-    sourceDir: config.sourceDir ?? 'build',
-    outDir: config.outDir ?? 'public'
-  };
+  if (!configPath) {
+    console.error('❌ No config file found');
+    return;
+  }
 
-  const buildPath = path.join(dir, defaultConfig.sourceDir);
+  console.log('🔍 Found config file:', configPath);
 
-  const build = require(buildPath);
+  const configFile = await import(configPath);
 
-  const modules = getAllRouteModules(build.routes);
+  const config = getConfig(configFile);
+
+  console.log('🔍 Generating sitemap...');
+
+  const { routes, modules } = await getRoutesAndModules();
 
   const sitemap = await getSitemap({
-    config: defaultConfig,
+    config,
     context: {
       routeModules: modules,
       manifest: {
-        routes: build.routes
+        routes
       }
     } as any,
     request: {} as any
   });
 
-  await fs.writeFile(
-    path.join(
-      dir,
-      defaultConfig.outDir,
-      `${defaultConfig.sitemapBaseFileName}.xml`
-    ),
+  fs.writeFileSync(
+    path.join(dir, config.outDir, `${config.sitemapBaseFileName}.xml`),
     sitemap
   );
 

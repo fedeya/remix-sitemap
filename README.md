@@ -66,9 +66,7 @@ export default async function handleRequest(
 
 Create a `remix-sitemap.config.js` file at the project root
 ```ts
-// remix-sitemap.config.js
-
-/** @type {import('remix-sitemap').RemixSitemapConfig} */
+/** @type {import('remix-sitemap').Config} */
 module.exports = {
   siteUrl: 'https://example.com',
   // configure other things here

@@ -42,15 +42,19 @@ export interface RemixSitemapConfig {
 
   optionalSegments?: Record<string, string[]>;
 
-  sourceDir?: string;
+  sourcePath?: string;
 
   outDir?: string;
+
+  build?: any;
 
   /**
    * Headers to be added to the sitemap response.
    */
   headers?: HeadersInit;
 }
+
+export type Config = RemixSitemapConfig;
 
 export interface SitemapEntry {
   loc: string;

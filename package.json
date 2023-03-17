@@ -19,8 +19,10 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@remix-run/dev": "^1.14.3",
     "@remix-run/server-runtime": "^1.14.1",
     "@types/node": "^18.15.2",
+    "@types/require-from-string": "^1.2.1",
     "@types/xml": "^1.0.8",
     "typescript": "^4.9.5"
   },
@@ -28,7 +30,9 @@
     "@remix-run/server-runtime": "^1.14.1"
   },
   "dependencies": {
+    "esbuild": "^0.17.11",
     "isomorphic-fetch": "^3.0.0",
+    "require-from-string": "^2.0.2",
     "ufo": "^1.1.1",
     "xml": "^1.0.1"
   },
