@@ -55,7 +55,26 @@ export const getRoutesAndModules = async () => {
           '.js': 'jsx'
         },
         logLevel: 'silent',
-        plugins
+        plugins: [
+          ...plugins,
+          {
+            name: 'clean-styles',
+            setup(build) {
+              build.onResolve({ filter: /\.css$/ }, args => ({
+                path: args.path,
+                namespace: 'clean-styles'
+              }));
+
+              build.onLoad(
+                { filter: /.*/, namespace: 'clean-styles' },
+                args => ({
+                  contents: '',
+                  loader: 'js'
+                })
+              );
+            }
+          }
+        ]
       });
 
       const module = requireFromString(result.outputFiles[0].text);
