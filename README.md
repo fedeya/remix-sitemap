@@ -62,13 +62,10 @@ export default async function handleRequest(
 }
 ```
 ### 2. Build time Generation (Experimental)
-> Right now this doesn't work with all server build targets like Cloudflare
 
 Create a `remix-sitemap.config.js` file at the project root
 ```ts
-// remix-sitemap.config.js
-
-/** @type {import('remix-sitemap').RemixSitemapConfig} */
+/** @type {import('remix-sitemap').Config} */
 module.exports = {
   siteUrl: 'https://example.com',
   // configure other things here
