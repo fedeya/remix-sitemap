@@ -30,6 +30,7 @@
     "@remix-run/server-runtime": "^1.14.1"
   },
   "dependencies": {
+    "@esbuild-plugins/tsconfig-paths": "^0.1.2",
     "esbuild": "^0.17.11",
     "isomorphic-fetch": "^3.0.0",
     "require-from-string": "^2.0.2",
