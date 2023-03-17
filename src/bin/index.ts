@@ -21,9 +21,25 @@ export const getRoutesAndModules = async () => {
 
   const modules: RouteModules = {};
 
+  console.log('🔍 Found routes: ' + Object.keys(routes).join(', '));
+
+  const tsconfig = path.resolve(dir, 'tsconfig.json');
+
+  const isTsProject = fs.existsSync(tsconfig);
+
+  const plugins = isTsProject
+    ? [
+        (await import('@esbuild-plugins/tsconfig-paths')).TsconfigPathsPlugin({
+          tsconfig
+        })
+      ]
+    : [];
+
   await Promise.all(
     Object.keys(routes).map(async key => {
       const route = routes[key];
+
+      if (key === 'root') return;
 
       const file = path.resolve(config.appDirectory, route.file);
 
@@ -31,11 +47,15 @@ export const getRoutesAndModules = async () => {
         entryPoints: [file],
         platform: 'neutral',
         format: 'cjs',
+        outfile: 'out.js',
         write: false,
+        bundle: true,
+        packages: 'external',
         loader: {
           '.js': 'jsx'
         },
-        logLevel: 'silent'
+        logLevel: 'silent',
+        plugins
       });
 
       const module = requireFromString(result.outputFiles[0].text);

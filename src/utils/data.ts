@@ -65,5 +65,5 @@ export function getOptionalSegmentData(params: GetOptionalSegmentDataParams) {
     if (handleValues) values[partialId] = handleValues;
   });
 
-  return values;
+  return Object.keys(values).length > 0 ? values : null;
 }
