@@ -96,7 +96,6 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | sitemapBaseFileName (optional) | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
 | optionalSegments (optional)    | possible values of optional segments                                                  |
 | alternateRefs (optional)       | multi language support by unique url. Default `[]`                                    |
-| sourcePath                     | The build source path. Default `"build"`                                              |
 | outDir                         | The directory to create the sitemaps files. Default `"public"`                        |
 
 

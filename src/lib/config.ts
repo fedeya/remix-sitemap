@@ -7,7 +7,6 @@ export const getConfig = (config: Config) => {
     changefreq: config.changefreq ?? 'daily',
     priority: config.priority ?? 0.7,
     sitemapBaseFileName: config.sitemapBaseFileName ?? 'sitemap',
-    sourcePath: config.sourcePath ?? 'build',
     outDir: config.outDir ?? 'public'
   };
 };
