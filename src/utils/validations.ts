@@ -12,6 +12,12 @@ export function isSitemapUrl(config: RemixSitemapConfig, request: Request) {
 export const isDynamicPath = (path?: string) =>
   path?.includes(':') || path?.includes('*');
 
+export const isRobotsUrl = (request: Request) => {
+  const url = new URL(request.url);
+
+  return isEqual(url.pathname, `/robots.txt`);
+};
+
 export function isValidEntry(route: string, context: EntryContext) {
   const { manifest, handle, path, module } = getRouteData(route, context);
 

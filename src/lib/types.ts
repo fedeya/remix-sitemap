@@ -44,6 +44,10 @@ export interface RemixSitemapConfig {
 
   outDir?: string;
 
+  generateRobotsTxt?: boolean;
+
+  robotsTxtOptions?: RobotsTxtOptions;
+
   /**
    * Headers to be added to the sitemap response.
    */
@@ -123,3 +127,14 @@ export interface Handle {
   generateEntries?(request: Request): Promise<SitemapEntry[]>;
   addOptionalSegments?: boolean;
 }
+
+export interface RobotsTxtOptions {
+  policies?: Policy[];
+  additionalSitemaps?: string[];
+}
+
+export type Policy = {
+  allow?: string[];
+  disallow?: string[];
+  userAgent: string;
+};
