@@ -36,7 +36,9 @@ import { createSitemapGenerator } from 'remix-sitemap';
 
 // Step 1. setup the generator
 const { isSitemapUrl, sitemap } = createSitemapGenerator({
-  siteUrl: 'https://example.com'
+  siteUrl: 'https://example.com',
+  generateRobotsTxt: true
+  // configure other things here
 })
 
 export default async function handleRequest(
@@ -68,6 +70,7 @@ Create a `remix-sitemap.config.js` file at the project root
 /** @type {import('remix-sitemap').Config} */
 module.exports = {
   siteUrl: 'https://example.com',
+  generateRobotsTxt: true
   // configure other things here
 }
 ```
@@ -87,17 +90,19 @@ For example if you are using `npm-run-all`
 ## Config
 This library is a little inspired in [next-sitemap](https://www.npmjs.com/package/next-sitemap) so the config is pretty much the same
 
-| Property                       | Description                                                                           |
-| ------------------------------ | ------------------------------------------------------------------------------------- |
-| siteUrl                        | Base url of your website                                                              |
-| changefreq (optional)          | Change frequency. Default `daily`                                                     |
-| priority (optional)            | Priority. Default `0.7`                                                               |
-| autoLastmod (optional)         | Add `<lastmod/>` property. Default `true`                                             |
-| sitemapBaseFileName (optional) | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
-| optionalSegments (optional)    | possible values of optional segments                                                  |
-| alternateRefs (optional)       | multi language support by unique url. Default `[]`                                    |
-| outDir                         | The directory to create the sitemaps files. Default `"public"`                        |
-
+| Property                                       | Description                                                                           |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------- |
+| siteUrl                                        | Base url of your website                                                              |
+| changefreq (optional)                          | Change frequency. Default `daily`                                                     |
+| priority (optional)                            | Priority. Default `0.7`                                                               |
+| autoLastmod (optional)                         | Add `<lastmod/>` property. Default `true`                                             |
+| sitemapBaseFileName (optional)                 | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
+| optionalSegments (optional)                    | possible values of optional segments                                                  |
+| alternateRefs (optional)                       | multi language support by unique url. Default `[]`                                    |
+| outDir (optional)                              | The directory to create the sitemaps files. Default `"public"`                        |
+| generateRobotsTxt (optional)                   | Generate `robots.txt` file. Default `false`                                           |
+| robotsTxtOptions.policies (optional)           | Policies for generating `robots.txt`                                                  |
+| robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                              |
 
 
 ---

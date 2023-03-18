@@ -6,13 +6,15 @@ function getPolicy(policy: Policy) {
   let policyStr = `# ${userAgent}\nUser-agent: ${userAgent}`;
 
   if (allow) {
-    const allowStr = allow.join('\nAllow: ');
+    const allowStr = Array.isArray(allow) ? allow.join('\nAllow: ') : allow;
 
     policyStr += `\nAllow: ${allowStr}`;
   }
 
   if (disallow) {
-    const disallowStr = disallow.join('\nDisallow: ');
+    const disallowStr = Array.isArray(disallow)
+      ? disallow.join('\nDisallow: ')
+      : disallow;
 
     policyStr += `\nDisallow: ${disallowStr}`;
   }

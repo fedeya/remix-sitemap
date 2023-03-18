@@ -134,7 +134,7 @@ export interface RobotsTxtOptions {
 }
 
 export type Policy = {
-  allow?: string[];
-  disallow?: string[];
+  allow?: string | string[];
+  disallow?: string | string[];
   userAgent: string;
 };
