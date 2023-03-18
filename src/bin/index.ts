@@ -3,9 +3,10 @@ import path from 'path';
 import fs from 'fs';
 import { getSitemap } from '../sitemap';
 import { getRoutesAndModules } from './routes';
+import { getConfig } from '../lib/config';
+import { getRobots } from '../robots';
 
 import './polyfill';
-import { getConfig } from '../lib/config';
 
 const dir = path.resolve(process.cwd());
 
@@ -43,6 +44,16 @@ async function main() {
     } as any,
     request: {} as any
   });
+
+  if (config.generateRobotsTxt) {
+    const robots = getRobots(config);
+
+    if (robots) {
+      fs.writeFileSync(path.join(dir, config.outDir, 'robots.txt'), robots);
+
+      console.log('✨ Robots.txt generated successfully');
+    }
+  }
 
   fs.writeFileSync(
     path.join(dir, config.outDir, `${config.sitemapBaseFileName}.xml`),
