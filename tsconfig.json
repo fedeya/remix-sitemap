@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ES2019",
     "rootDir": "./src",
-    "types": ["vitest/globals"],
     "allowJs": true,
     "outDir": "./dist",
     "module": "CommonJS",
@@ -11,8 +10,9 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictNullChecks": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vitest/globals"]
   },
-  "exclude": ["node_modules", "src/**/*.test.ts"],
+  "exclude": ["node_modules"],
   "include": ["src/**/*.ts"]
 }
