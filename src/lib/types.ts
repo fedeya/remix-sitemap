@@ -115,6 +115,7 @@ export interface News {
 export interface AlternateRef {
   href: string;
   hreflang: string;
+  absolute?: boolean;
 }
 
 export interface SitemapHandle {
