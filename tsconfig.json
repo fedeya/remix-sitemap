@@ -9,10 +9,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "declaration": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
     "types": ["vitest/globals"]
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "coverage"],
   "include": ["src/**/*.ts"]
 }

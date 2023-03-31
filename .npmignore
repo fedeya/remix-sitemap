@@ -10,9 +10,12 @@
 .svn
 .wafpickle-*
 config.gypi
+.github
+
 CVS
 npm-debug.log
-.github
+
 src
 tsconfig.json
 vitest.config.ts
+coverage
