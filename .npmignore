@@ -14,3 +14,5 @@ CVS
 npm-debug.log
 .github
 src
+tsconfig.json
+vitest.config.ts
