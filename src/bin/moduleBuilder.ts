@@ -4,6 +4,27 @@ import fs from 'fs';
 
 const dir = path.resolve(process.cwd());
 
+const cleanAssetsPlugin: Plugin = {
+  name: 'clean-assets',
+  setup(build) {
+    build.onResolve(
+      {
+        filter:
+          /\.(png|jpg|jpeg|gif|svg|webp|ico|woff|woff2|ttf|otf|eot|mp4|webm|wav|mp3|m4a|aac|oga|pdf)$/
+      },
+      args => ({
+        path: args.path,
+        namespace: 'clean-assets'
+      })
+    );
+
+    build.onLoad({ filter: /.*/, namespace: 'clean-assets' }, () => ({
+      contents: '',
+      loader: 'js'
+    }));
+  }
+};
+
 const cleanStylesPlugin: Plugin = {
   name: 'clean-styles',
   setup(build) {
@@ -12,7 +33,7 @@ const cleanStylesPlugin: Plugin = {
       namespace: 'clean-styles'
     }));
 
-    build.onLoad({ filter: /.*/, namespace: 'clean-styles' }, args => ({
+    build.onLoad({ filter: /.*/, namespace: 'clean-styles' }, () => ({
       contents: '',
       loader: 'js'
     }));
@@ -20,7 +41,7 @@ const cleanStylesPlugin: Plugin = {
 };
 
 export async function createModuleBuilder() {
-  const plugins = [cleanStylesPlugin];
+  const plugins = [cleanStylesPlugin, cleanAssetsPlugin];
 
   const tsconfig = path.resolve(dir, 'tsconfig.json');
 
