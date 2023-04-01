@@ -1,5 +1,5 @@
 import { getConfig } from '../../lib/config';
-import { getEntryXml } from '../xml';
+import { buildSitemapUrl } from '../sitemap';
 
 describe('xml', () => {
   const config = getConfig({
@@ -8,7 +8,7 @@ describe('xml', () => {
   });
 
   it('snapshot test for google images', () => {
-    const entry = getEntryXml({
+    const entry = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',
@@ -26,7 +26,7 @@ describe('xml', () => {
   });
 
   it('snapshot test for google news', () => {
-    const entry = getEntryXml({
+    const entry = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',
@@ -49,7 +49,7 @@ describe('xml', () => {
   });
 
   it('snapshot test for google video', () => {
-    const entry = getEntryXml({
+    const entry = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',
@@ -74,14 +74,12 @@ describe('xml', () => {
               currency: 'USD',
               value: 1.99
             },
-            galleryTitle: 'Example gallery',
             tags: ['example', 'video'],
             requiresSubscription: true,
             uploader: {
               name: 'Example',
               info: 'https://example.com/uploader'
             },
-            platform: 'web',
             live: true
           }
         ]
@@ -94,7 +92,7 @@ describe('xml', () => {
   });
 
   it('snapshot test for alternateRefs', () => {
-    const entryUsingAbsolute = getEntryXml({
+    const entryUsingAbsolute = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',
@@ -112,7 +110,7 @@ describe('xml', () => {
       "<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><xhtml:link rel=\\"alternate\\" hreflang=\\"en\\" href=\\"https://example.com/en/test\\"/></url>"
     `);
 
-    const entryUsingRelative = getEntryXml({
+    const entryUsingRelative = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',

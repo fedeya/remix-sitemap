@@ -1,7 +1,7 @@
 import { EntryContext } from '@remix-run/server-runtime';
 import { RemixSitemapConfig, SitemapEntry } from '../lib/types';
 import { getRouteData } from './data';
-import { getEntryXml } from './xml';
+import { buildSitemapUrl } from '../builders/sitemap';
 import { isDynamicPath } from './validations';
 
 type GetOptionalSegmentEntriesParams = {
@@ -32,7 +32,7 @@ export function getOptionalSegmentEntries(
         .join('/');
 
       if (!entries) {
-        return getEntryXml({
+        return buildSitemapUrl({
           config,
           entry: {
             loc: `${parentPath}/${path}`
@@ -40,7 +40,7 @@ export function getOptionalSegmentEntries(
         });
       } else {
         return entries?.map(entry =>
-          getEntryXml({
+          buildSitemapUrl({
             config,
             entry: {
               ...entry,
@@ -61,7 +61,7 @@ export function getOptionalSegmentEntries(
 
     if (fullPath && !isDynamicPath(fullPath)) {
       finalEntry.push(
-        getEntryXml({
+        buildSitemapUrl({
           config,
           entry: {
             loc: fullPath
@@ -72,7 +72,7 @@ export function getOptionalSegmentEntries(
 
     entries?.forEach(entry => {
       finalEntry.push(
-        getEntryXml({
+        buildSitemapUrl({
           config,
           entry: {
             ...entry,
