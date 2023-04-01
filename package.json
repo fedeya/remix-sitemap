@@ -14,7 +14,13 @@
     "prepublishOnly": "npm run build",
     "dev": "tsc -w"
   },
-  "keywords": [],
+  "keywords": [
+    "remix",
+    "sitemap",
+    "seo",
+    "sitemap.xml",
+    "sitemap-generator"
+  ],
   "author": {
     "name": "Federico Minaya",
     "email": "hello@fedeminaya.com",

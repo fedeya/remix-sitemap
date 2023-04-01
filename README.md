@@ -22,6 +22,7 @@
 
 - Runtime Generation
 - Build time Generation (Experimental)
+- Generate `robots.txt`
 - Handle Static Optional Paths
 
 ## Installation
