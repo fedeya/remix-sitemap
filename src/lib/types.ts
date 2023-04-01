@@ -35,17 +35,31 @@ export interface RemixSitemapConfig {
 
   /**
    * The base file name of the sitemap.
+   * @default 'sitemap'
    */
   sitemapBaseFileName?: string;
 
+  /**
+   * the xhtml:link properties.
+   */
   alternateRefs?: AlternateRef[];
 
   optionalSegments?: Record<string, string[]>;
 
+  /**
+   * The directory where the sitemap will be generated.
+   */
   outDir?: string;
 
+  /**
+   * Generate robots.txt file.
+   * @default false
+   */
   generateRobotsTxt?: boolean;
 
+  /**
+   * Options for robots.txt generation.
+   */
   robotsTxtOptions?: RobotsTxtOptions;
 
   /**
@@ -58,8 +72,8 @@ export type Config = RemixSitemapConfig;
 
 export interface SitemapEntry {
   loc: string;
-  changefreq?: string;
-  priority?: number;
+  changefreq?: ChangeFreq;
+  priority?: Priority;
   lastmod?: string;
   alternateRefs?: AlternateRef[];
   images?: Image[];
@@ -114,8 +128,20 @@ export interface News {
 }
 
 export interface AlternateRef {
+  /**
+   * The URL of the alternate reference.
+   */
   href: string;
+
+  /**
+   * The language of the alternate reference.
+   */
   hreflang: string;
+
+  /**
+   * If true, the href is not relative to loc.
+   * @default false
+   */
   absolute?: boolean;
 }
 
@@ -125,8 +151,19 @@ export interface SitemapHandle {
 
 export interface Handle {
   values?: string[];
+
+  /**
+   * If true, the handle will be excluded from the sitemap.
+   * @default false
+   */
   exclude?: boolean;
+
   generateEntries?(request: Request): Promise<SitemapEntry[]>;
+
+  /**
+   * If true, the handle will generate entries for optional segments.
+   * @default true
+   */
   addOptionalSegments?: boolean;
 }
 
@@ -136,7 +173,18 @@ export interface RobotsTxtOptions {
 }
 
 export type Policy = {
+  /**
+   * The paths to allow.
+   */
   allow?: string | string[];
+
+  /**
+   * The paths to disallow.
+   */
   disallow?: string | string[];
+
+  /**
+   * The user agent to apply the policy to.
+   */
   userAgent: string;
 };
