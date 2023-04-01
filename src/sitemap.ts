@@ -3,7 +3,7 @@ import type { RemixSitemapConfig } from './lib/types';
 import { getOptionalSegmentData, getRouteData } from './utils/data';
 import { getOptionalSegmentEntries } from './utils/entries';
 import { isValidEntry } from './utils/validations';
-import { getEntryXml } from './utils/xml';
+import { buildSitemapUrl } from './builders/sitemap';
 
 export async function sitemapResponse(
   config: RemixSitemapConfig,
@@ -87,9 +87,9 @@ export async function getEntry(params: GetEntryParams) {
     });
 
   if (entries)
-    return entries?.map(entry => getEntryXml({ config, entry })).join('');
+    return entries?.map(entry => buildSitemapUrl({ config, entry })).join('');
 
-  return getEntryXml({
+  return buildSitemapUrl({
     config,
     entry: {
       loc: path!

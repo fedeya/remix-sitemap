@@ -73,8 +73,7 @@ export interface Video {
   description: string;
   contentLoc: string;
   playerLoc: string;
-
-  restriction: {
+  restriction?: {
     relationship: 'allow' | 'deny';
     countries: string[];
   };
@@ -85,7 +84,6 @@ export interface Video {
   publicationDate?: string | Date;
   familyFriendly?: boolean;
   tags?: string[];
-  galleryTitle?: string;
   requiresSubscription?: boolean;
   price?: {
     currency: string;
@@ -95,7 +93,10 @@ export interface Video {
     name: string;
     info?: string;
   };
-  platform?: string;
+  platform?: {
+    relationship: 'allow' | 'deny';
+    content: string[];
+  };
   live?: boolean;
 }
 
