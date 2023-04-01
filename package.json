@@ -13,6 +13,7 @@
     "coverage": "vitest run --coverage",
     "prepublishOnly": "npm run build",
     "lint": "eslint ./src --ext .ts",
+    "format": "prettier --write ./src",
     "dev": "tsc -w"
   },
   "keywords": [
