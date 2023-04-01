@@ -6,3 +6,4 @@
 .eslintrc
 tsconfig.json
 vitest.config.ts
+prettier.config.js

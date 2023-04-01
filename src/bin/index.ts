@@ -7,7 +7,7 @@ import { getConfig } from '../lib/config';
 import { getRobots } from '../robots';
 
 import './polyfill';
-import { EntryContext } from '@remix-run/server-runtime';
+import type { EntryContext } from '@remix-run/server-runtime';
 
 const dir = path.resolve(process.cwd());
 
