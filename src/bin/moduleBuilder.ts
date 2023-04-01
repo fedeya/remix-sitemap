@@ -1,4 +1,4 @@
-import { Plugin, build } from 'esbuild';
+import { type Plugin, build } from 'esbuild';
 import path from 'path';
 import fs from 'fs';
 

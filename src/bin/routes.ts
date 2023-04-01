@@ -2,7 +2,7 @@ import { readConfig } from '@remix-run/dev/dist/config';
 import path from 'path';
 import { createModuleBuilder } from './moduleBuilder';
 import requireFromString from 'require-from-string';
-import { EntryContext } from '@remix-run/server-runtime';
+import type { EntryContext } from '@remix-run/server-runtime';
 
 const dir = path.resolve(process.cwd());
 

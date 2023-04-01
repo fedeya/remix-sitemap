@@ -1,6 +1,6 @@
 export const getBooleanValue = (value: boolean) => (value ? 'yes' : 'no');
 
-export function getOptionalValue<T>(value: any | undefined, returnType: T) {
+export function getOptionalValue<T>(value: unknown | undefined, returnType: T) {
   if (value) {
     return returnType;
   }

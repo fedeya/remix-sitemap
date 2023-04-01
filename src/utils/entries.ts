@@ -1,5 +1,5 @@
-import { EntryContext } from '@remix-run/server-runtime';
-import { RemixSitemapConfig, SitemapEntry } from '../lib/types';
+import type { EntryContext } from '@remix-run/server-runtime';
+import type { RemixSitemapConfig, SitemapEntry } from '../lib/types';
 import { getRouteData } from './data';
 import { buildSitemapUrl } from '../builders/sitemap';
 import { isDynamicPath } from './validations';

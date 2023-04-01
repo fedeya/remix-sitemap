@@ -7,6 +7,7 @@ import { getConfig } from '../lib/config';
 import { getRobots } from '../robots';
 
 import './polyfill';
+import type { EntryContext } from '@remix-run/server-runtime';
 
 const dir = path.resolve(process.cwd());
 
@@ -41,8 +42,8 @@ async function main() {
       manifest: {
         routes
       }
-    } as any,
-    request: {} as any
+    } as unknown as EntryContext,
+    request: {} as unknown as Request
   });
 
   if (config.generateRobotsTxt) {
