@@ -1,7 +1,7 @@
 import { getConfig } from '../../lib/config';
 import { buildSitemapUrl } from '../sitemap';
 
-describe('xml', () => {
+describe('sitemap builder', () => {
   const config = getConfig({
     siteUrl: 'https://example.com',
     autoLastmod: false
