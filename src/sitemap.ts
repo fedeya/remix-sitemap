@@ -92,7 +92,7 @@ export async function getEntry(params: GetEntryParams) {
   return buildSitemapUrl({
     config,
     entry: {
-      loc: path!
+      loc: path
     }
   });
 }

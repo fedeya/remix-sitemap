@@ -13,7 +13,7 @@ export function getRouteData(route: string, context: EntryContext) {
     addOptionalSegments: handle.sitemap?.addOptionalSegments ?? true
   };
 
-  const path = manifest.index ? '' : manifest.path;
+  const path = manifest.index ? '' : manifest.path ?? '';
 
   const parents = manifest.id?.split('/').slice(0, -1);
 
