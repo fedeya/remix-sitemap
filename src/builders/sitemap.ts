@@ -31,9 +31,7 @@ export const getVideo = (video: Video) => ({
   'video:rating': video.rating,
   'video:view_count': video.viewCount,
   'video:publication_date': video.publicationDate,
-  'video:family_friendly': video.familyFriendly
-    ? getBooleanValue(video.familyFriendly)
-    : undefined,
+  'video:family_friendly': getBooleanValue(video.familyFriendly),
   'video:restriction': getOptionalValue(video.restriction, {
     '@_relationship': video.restriction?.relationship,
     '#text': video.restriction?.countries.join(' ')
@@ -42,10 +40,7 @@ export const getVideo = (video: Video) => ({
     '@_currency': video.price?.currency,
     '#text': video.price?.value
   }),
-  'video:requires_subscription':
-    typeof video.requiresSubscription !== 'undefined'
-      ? getBooleanValue(video.requiresSubscription)
-      : undefined,
+  'video:requires_subscription': getBooleanValue(video.requiresSubscription),
   'video:platform': getOptionalValue(video.platform, {
     '@_relationship': video.platform?.relationship,
     '#text': video.platform?.content?.join(' ')
@@ -54,8 +49,7 @@ export const getVideo = (video: Video) => ({
     '@_info': video.uploader?.info,
     '#text': video.uploader?.name
   }),
-  'video:live':
-    typeof video.live !== 'undefined' ? getBooleanValue(video.live) : undefined,
+  'video:live': getBooleanValue(video.live),
   'video:tag': video.tags
 });
 
