@@ -2,7 +2,7 @@ import type { EntryContext } from '@remix-run/server-runtime';
 import type { RemixSitemapConfig } from './lib/types';
 import { getOptionalSegmentData, getRouteData } from './utils/data';
 import { getOptionalSegmentEntries } from './utils/entries';
-import { isValidEntry } from './utils/validations';
+import { isValidEntry, isValidEntryV2 } from './utils/validations';
 import { buildSitemapUrl } from './builders/sitemap';
 
 export async function sitemapResponse(
@@ -58,8 +58,38 @@ export type GetEntryParams = GetSitemapParams & {
   route: string;
 };
 
+export async function getEntryV2(params: GetEntryParams) {
+  const { route, context, request, config } = params;
+
+  if (!isValidEntryV2(route, context)) return '';
+
+  const { sitemapFunction, path } = getRouteData(route, context);
+
+  const sitemap = sitemapFunction
+    ? await sitemapFunction({ request, config })
+    : null;
+
+  if (sitemap) {
+    if (Array.isArray(sitemap)) {
+      const notExcluded = sitemap.filter(entry => !entry.exclude);
+
+      return notExcluded
+        .map(entry => buildSitemapUrl({ config, entry }))
+        .join('');
+    }
+
+    if (sitemap.exclude) return '';
+
+    return buildSitemapUrl({ config, entry: sitemap });
+  }
+
+  return buildSitemapUrl({ config, entry: { loc: path } });
+}
+
 export async function getEntry(params: GetEntryParams) {
   const { route, context, request, config } = params;
+
+  if (config.future?.sitemapFunction) return getEntryV2(params);
 
   if (!isValidEntry(route, context)) return '';
 
@@ -89,10 +119,5 @@ export async function getEntry(params: GetEntryParams) {
   if (entries)
     return entries?.map(entry => buildSitemapUrl({ config, entry })).join('');
 
-  return buildSitemapUrl({
-    config,
-    entry: {
-      loc: path
-    }
-  });
+  return buildSitemapUrl({ config, entry: { loc: path } });
 }

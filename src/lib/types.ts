@@ -66,12 +66,16 @@ export interface RemixSitemapConfig {
    * Headers to be added to the sitemap response.
    */
   headers?: HeadersInit;
+
+  future?: {
+    sitemapFunction?: boolean;
+  };
 }
 
 export type Config = RemixSitemapConfig;
 
 export interface SitemapEntry {
-  loc: string;
+  loc?: string;
   changefreq?: ChangeFreq;
   priority?: Priority;
   lastmod?: string;
@@ -188,3 +192,19 @@ export type Policy = {
    */
   userAgent: string;
 };
+
+export interface SitemapArgs {
+  config: Config;
+  request: Request;
+}
+
+export interface SitemapFunctionEntry extends SitemapEntry {
+  exclude?: boolean;
+  addOptionalSegments?: boolean;
+}
+
+export type SitemapDefinition = SitemapFunctionEntry | SitemapFunctionEntry[];
+
+export type SitemapFunction = (
+  args: SitemapArgs
+) => Promise<SitemapDefinition> | SitemapDefinition;

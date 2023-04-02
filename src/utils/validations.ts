@@ -18,10 +18,30 @@ export const isRobotsUrl = (request: Request) => {
   return isEqual(url.pathname, `/robots.txt`);
 };
 
-export function isValidEntry(route: string, context: EntryContext) {
-  const { manifest, handle, path, module } = getRouteData(route, context);
+export function isValidEntryV2(route: string, context: EntryContext) {
+  const { manifest, path, module, sitemapFunction } = getRouteData(
+    route,
+    context
+  );
 
   if (manifest.id === 'root') return false;
+
+  if (!module.default && !sitemapFunction) return false;
+
+  if (isDynamicPath(path) && !sitemapFunction) return false;
+
+  return true;
+}
+
+export function isValidEntry(route: string, context: EntryContext) {
+  const { manifest, handle, path, module, sitemapFunction } = getRouteData(
+    route,
+    context
+  );
+
+  if (manifest.id === 'root') return false;
+
+  if (sitemapFunction) return true;
 
   if (handle.exclude) return false;
 
