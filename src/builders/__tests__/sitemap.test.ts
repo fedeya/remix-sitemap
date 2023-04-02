@@ -65,7 +65,7 @@ describe('sitemap builder', () => {
             rating: 4.5,
             viewCount: 100,
             publicationDate: '2021-01-01',
-            familyFriendly: true,
+            familyFriendly: false,
             restriction: {
               relationship: 'allow',
               countries: ['US', 'CA']
@@ -87,7 +87,7 @@ describe('sitemap builder', () => {
     });
 
     expect(entry).toMatchInlineSnapshot(`
-      "<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><video:video><video:thumbnail_loc>https://example.com/thumbnail.jpg</video:thumbnail_loc><video:title>Example video</video:title><video:description>Example video description</video:description><video:content_loc>https://example.com/video.mp4</video:content_loc><video:player_loc>https://example.com/player</video:player_loc><video:duration>60</video:duration><video:expiration_date>2021-01-01</video:expiration_date><video:rating>4.5</video:rating><video:view_count>100</video:view_count><video:publication_date>2021-01-01</video:publication_date><video:family_friendly>yes</video:family_friendly><video:restriction relationship=\\"allow\\">US CA</video:restriction><video:price currency=\\"USD\\">1.99</video:price><video:requires_subscription>yes</video:requires_subscription><video:uploader info=\\"https://example.com/uploader\\">Example</video:uploader><video:live>yes</video:live><video:tag>example</video:tag><video:tag>video</video:tag></video:video></url>"
+      "<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><video:video><video:thumbnail_loc>https://example.com/thumbnail.jpg</video:thumbnail_loc><video:title>Example video</video:title><video:description>Example video description</video:description><video:content_loc>https://example.com/video.mp4</video:content_loc><video:player_loc>https://example.com/player</video:player_loc><video:duration>60</video:duration><video:expiration_date>2021-01-01</video:expiration_date><video:rating>4.5</video:rating><video:view_count>100</video:view_count><video:publication_date>2021-01-01</video:publication_date><video:family_friendly>no</video:family_friendly><video:restriction relationship=\\"allow\\">US CA</video:restriction><video:price currency=\\"USD\\">1.99</video:price><video:requires_subscription>yes</video:requires_subscription><video:uploader info=\\"https://example.com/uploader\\">Example</video:uploader><video:live>yes</video:live><video:tag>example</video:tag><video:tag>video</video:tag></video:video></url>"
     `);
   });
 
