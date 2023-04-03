@@ -34,14 +34,9 @@ export function isValidEntryV2(route: string, context: EntryContext) {
 }
 
 export function isValidEntry(route: string, context: EntryContext) {
-  const { manifest, handle, path, module, sitemapFunction } = getRouteData(
-    route,
-    context
-  );
+  const { manifest, handle, path, module } = getRouteData(route, context);
 
   if (manifest.id === 'root') return false;
-
-  if (sitemapFunction) return true;
 
   if (handle.exclude) return false;
 
