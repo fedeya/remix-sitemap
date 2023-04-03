@@ -96,7 +96,8 @@ export function buildSitemapUrl({
   const builder = new XMLBuilder({
     ignoreAttributes: false,
     processEntities: false,
-    suppressEmptyNode: true
+    suppressEmptyNode: true,
+    format: config.format
   });
 
   const url = getUrl({
@@ -137,7 +138,8 @@ export async function buildSitemap(params: GetSitemapParams): Promise<string> {
   const builder = new XMLBuilder({
     suppressEmptyNode: true,
     ignoreAttributes: false,
-    processEntities: false
+    processEntities: false,
+    format: config.format
   });
 
   return builder.build({
