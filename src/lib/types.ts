@@ -40,10 +40,18 @@ export interface RemixSitemapConfig {
   sitemapBaseFileName?: string;
 
   /**
+   * Format the sitemap.
+   */
+  format?: boolean;
+
+  /**
    * the xhtml:link properties.
    */
   alternateRefs?: AlternateRef[];
 
+  /**
+   * @deprecated not used anymore in sitemap function
+   */
   optionalSegments?: Record<string, string[]>;
 
   /**
@@ -145,6 +153,9 @@ export interface AlternateRef {
   absolute?: boolean;
 }
 
+/**
+ * @deprecated Use SitemapFunction instead.
+ */
 export interface SitemapHandle {
   sitemap?: Handle;
 }
@@ -188,3 +199,16 @@ export type Policy = {
    */
   userAgent: string;
 };
+
+export interface SitemapArgs {
+  config: Config;
+  request: Request;
+}
+
+export type SitemapDefinition =
+  | ({ exclude?: boolean } & Omit<SitemapEntry, 'loc'> & { loc?: string })
+  | ({ exclude?: boolean } & SitemapEntry)[];
+
+export type SitemapFunction = (
+  args: SitemapArgs
+) => Promise<SitemapDefinition> | SitemapDefinition;

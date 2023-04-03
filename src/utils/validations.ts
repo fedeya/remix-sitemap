@@ -18,16 +18,40 @@ export const isRobotsUrl = (request: Request) => {
   return isEqual(url.pathname, `/robots.txt`);
 };
 
+export const isLegacyHandle = (route: string, context: EntryContext) => {
+  const { handle, sitemapFunction } = getRouteData(route, context);
+
+  return handle && !sitemapFunction;
+};
+
 export function isValidEntry(route: string, context: EntryContext) {
+  const { manifest, path, module, sitemapFunction } = getRouteData(
+    route,
+    context
+  );
+
+  if (manifest.id === 'root') return false;
+
+  if (!module.default && !sitemapFunction) return false;
+
+  if (isDynamicPath(path) && !sitemapFunction) return false;
+
+  return true;
+}
+
+/**
+ * @deprecated
+ */
+export function isLegacyValidEntry(route: string, context: EntryContext) {
   const { manifest, handle, path, module } = getRouteData(route, context);
 
   if (manifest.id === 'root') return false;
 
-  if (handle.exclude) return false;
+  if (handle?.exclude) return false;
 
-  if (!module.default && !handle.generateEntries) return false;
+  if (!module.default && !handle?.generateEntries) return false;
 
-  if (isDynamicPath(path) && !handle.generateEntries) return false;
+  if (isDynamicPath(path) && !handle?.generateEntries) return false;
 
   return true;
 }

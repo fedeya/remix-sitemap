@@ -1,17 +1,26 @@
 import type { EntryContext } from '@remix-run/server-runtime';
-import type { Handle, RemixSitemapConfig, SitemapHandle } from '../lib/types';
+import type {
+  Handle,
+  RemixSitemapConfig,
+  SitemapFunction,
+  SitemapHandle
+} from '../lib/types';
 
 export function getRouteData(route: string, context: EntryContext) {
   const manifest = context.manifest.routes[route];
 
-  const module = context.routeModules[route];
+  const module = context.routeModules[
+    route
+  ] as (typeof context.routeModules)[string] & { sitemap?: SitemapFunction };
 
   const handle: SitemapHandle = module?.handle || {};
 
-  const defaultHandle = {
-    ...(handle.sitemap || {}),
-    addOptionalSegments: handle.sitemap?.addOptionalSegments ?? true
-  };
+  const defaultHandle = handle.sitemap
+    ? {
+        ...(handle.sitemap || {}),
+        addOptionalSegments: handle.sitemap?.addOptionalSegments ?? true
+      }
+    : undefined;
 
   const path = manifest.index ? '' : manifest.path ?? '';
 
@@ -23,7 +32,11 @@ export function getRouteData(route: string, context: EntryContext) {
     manifest,
     module,
     modules: context.routeModules,
+    /**
+     * @deprecated
+     */
     handle: defaultHandle,
+    sitemapFunction: module?.sitemap,
     path,
     parents,
     parentId
@@ -43,7 +56,7 @@ export function getOptionalSegmentData(params: GetOptionalSegmentDataParams) {
 
   const values: Record<string, string[]> = {};
 
-  if (!handle.addOptionalSegments || !parents || parents.length <= 1)
+  if (!handle?.addOptionalSegments || !parents || parents.length <= 1)
     return null;
 
   parents.forEach((partialId, index) => {

@@ -9,6 +9,8 @@ import type {
   RemixSitemapConfig
 } from '../lib/types';
 import { getBooleanValue, getOptionalValue } from '../utils/xml';
+import type { EntryContext } from '@remix-run/server-runtime';
+import { getEntry } from '../utils/entries';
 
 export const getAlternateRef = (alternateRefs: AlternateRef) => ({
   '@_rel': 'alternate',
@@ -80,7 +82,10 @@ export type BuildSitemapUrlParams = {
   entry?: SitemapEntry;
 };
 
-export function buildSitemapUrl({ config, entry }: BuildSitemapUrlParams) {
+export function buildSitemapUrl({
+  config,
+  entry
+}: BuildSitemapUrlParams): string {
   const alternateRefs = (entry?.alternateRefs || config.alternateRefs)?.map(
     ref => ({
       ...ref,
@@ -91,7 +96,8 @@ export function buildSitemapUrl({ config, entry }: BuildSitemapUrlParams) {
   const builder = new XMLBuilder({
     ignoreAttributes: false,
     processEntities: false,
-    suppressEmptyNode: true
+    suppressEmptyNode: true,
+    format: config.format
   });
 
   const url = getUrl({
@@ -108,4 +114,45 @@ export function buildSitemapUrl({ config, entry }: BuildSitemapUrlParams) {
   });
 
   return builder.build(url);
+}
+
+export type GetSitemapParams = {
+  config: RemixSitemapConfig;
+  context: EntryContext;
+  request: Request;
+};
+
+export async function buildSitemap(params: GetSitemapParams): Promise<string> {
+  const { config, context, request } = params;
+
+  const routes = Object.keys(context.manifest.routes);
+
+  const entriesPromise = routes.map(route =>
+    getEntry({ route, config, context, request })
+  );
+
+  const entries = (await Promise.all(entriesPromise)).join('');
+
+  const builder = new XMLBuilder({
+    suppressEmptyNode: true,
+    ignoreAttributes: false,
+    processEntities: false,
+    format: config.format
+  });
+
+  return builder.build({
+    '?xml': {
+      '@_version': '1.0',
+      '@_encoding': 'UTF-8'
+    },
+    urlset: {
+      '@_xmlns': 'http://www.sitemaps.org/schemas/sitemap/0.9',
+      '@_xmlns:news': 'http://www.google.com/schemas/sitemap-news/0.9',
+      '@_xmlns:xhtml': 'http://www.w3.org/1999/xhtml',
+      '@_xmlns:mobile': 'http://www.google.com/schemas/sitemap-mobile/1.0',
+      '@_xmlns:image': 'http://www.google.com/schemas/sitemap-image/1.1',
+      '@_xmlns:video': 'http://www.google.com/schemas/sitemap-video/1.1',
+      '#text': entries
+    }
+  });
 }

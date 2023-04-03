@@ -1,8 +1,88 @@
 import type { EntryContext } from '@remix-run/server-runtime';
 import type { RemixSitemapConfig, SitemapEntry } from '../lib/types';
-import { getRouteData } from './data';
+import { getOptionalSegmentData, getRouteData } from './data';
 import { buildSitemapUrl } from '../builders/sitemap';
-import { isDynamicPath } from './validations';
+import {
+  isDynamicPath,
+  isLegacyHandle,
+  isLegacyValidEntry,
+  isValidEntry
+} from './validations';
+import type { GetSitemapParams } from '../builders/sitemap';
+
+export type GetEntryParams = GetSitemapParams & {
+  route: string;
+};
+
+export async function getEntry(params: GetEntryParams) {
+  const { route, context, request, config } = params;
+
+  if (isLegacyHandle(route, context)) return getLegacyEntry(params);
+
+  if (!isValidEntry(route, context)) return '';
+
+  const { sitemapFunction, path } = getRouteData(route, context);
+
+  const sitemap = sitemapFunction
+    ? await sitemapFunction({ request, config })
+    : null;
+
+  if (sitemap) {
+    if (Array.isArray(sitemap)) {
+      const notExcluded = sitemap.filter(entry => !entry.exclude);
+
+      return notExcluded
+        .map(entry => buildSitemapUrl({ config, entry }))
+        .join('');
+    }
+
+    if (sitemap.exclude) return '';
+
+    return buildSitemapUrl({
+      config,
+      entry: { ...sitemap, loc: sitemap.loc || path }
+    });
+  }
+
+  return buildSitemapUrl({ config, entry: { loc: path } });
+}
+
+/**
+ * @deprecated
+ */
+export async function getLegacyEntry(params: GetEntryParams) {
+  const { route, context, request, config } = params;
+
+  if (!isLegacyValidEntry(route, context)) return '';
+
+  const { handle, path } = getRouteData(route, context);
+
+  const entriesPromise = handle?.generateEntries
+    ? handle.generateEntries(request)
+    : null;
+
+  const segments = getOptionalSegmentData({
+    config,
+    context,
+    route
+  });
+
+  const entries = entriesPromise ? await entriesPromise : null;
+
+  if (segments)
+    return getOptionalSegmentEntries({
+      config,
+      context,
+      route,
+      segments,
+      entries
+    });
+
+  if (entries)
+    return entries?.map(entry => buildSitemapUrl({ config, entry })).join('');
+
+  return buildSitemapUrl({ config, entry: { loc: path } });
+}
 
 type GetOptionalSegmentEntriesParams = {
   segments: Record<string, string[]>;

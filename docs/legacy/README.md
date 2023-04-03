@@ -23,6 +23,7 @@
 - Runtime Generation
 - Build time Generation (Experimental)
 - Generate `robots.txt`
+- Handle Static Optional Paths
 
 ## Installation
 
@@ -32,7 +33,7 @@ npm i remix-sitemap
 
 ## Usage
 For generate the sitemap we have 2 ways.
-### Runtime Generation
+### 1. Runtime Generation
 ```ts
 // entry.server.tsx
 import { createSitemapGenerator } from 'remix-sitemap';
@@ -40,7 +41,8 @@ import { createSitemapGenerator } from 'remix-sitemap';
 // Step 1. setup the generator
 const { isSitemapUrl, sitemap } = createSitemapGenerator({
   siteUrl: 'https://example.com',
-  generateRobotsTxt: true
+  generateRobotsTxt: true,
+  useLegacyHandle: true
   // configure other things here
 })
 
@@ -66,14 +68,15 @@ export default async function handleRequest(
   });
 }
 ```
-### Build time Generation (Experimental)
+### 2. Build time Generation (Experimental)
 
 Create a `remix-sitemap.config.js` file at the project root
 ```ts
 /** @type {import('remix-sitemap').Config} */
 module.exports = {
   siteUrl: 'https://example.com',
-  generateRobotsTxt: true
+  generateRobotsTxt: true,
+  useLegacyHandle: true
   // configure other things here
 }
 ```
@@ -100,68 +103,129 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | priority (optional)                            | Priority. Default `0.7`                                                               |
 | autoLastmod (optional)                         | Add `<lastmod/>` property. Default `true`                                             |
 | sitemapBaseFileName (optional)                 | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
+| optionalSegments (optional)                    | possible values of optional segments                                                  |
 | alternateRefs (optional)                       | multi language support by unique url. Default `[]`                                    |
 | outDir (optional)                              | The directory to create the sitemaps files. Default `"public"`                        |
 | generateRobotsTxt (optional)                   | Generate `robots.txt` file. Default `false`                                           |
 | robotsTxtOptions.policies (optional)           | Policies for generating `robots.txt`                                                  |
 | robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                              |
-| format (optional)                              | Format the sitemap for better view. Default `false`                                   |
+
+
 ---
 
 ## Generate Sitemap for Dynamic Routes
-> If you are using build time generation, the request will be empty
+> If you are using build time generation, the request in `generateEntries` will be empty
 ```ts
 // app/routes/posts.$slug.tsx
-import type { SitemapFunction } from 'remix-sitemap';
+import type { SitemapHandle } from 'remix-sitemap';
 
-export const sitemap: SitemapFunction = ({ config, request }) => {
-  const posts = await getPosts();
-  
-  return posts.map(post => ({
-    loc: `/posts/${post.slug}`, 
-    lastmod: post.updatedAt,
-    exclude: post.isDraft, // exclude this entry
-    // acts only in this loc
-    alternateRefs: [
-      {
-        href: `${config.siteUrl}/en/posts/${post.slug}`,
-        absolute: true,
-        hreflang: 'en'
-      },
-      {
-        href: `${config.siteUrl}/es`,
-        hreflang: 'es'
-      }
-    ]
-  }));
+export const handle: SitemapHandle = {
+  sitemap: { 
+    async generateEntries(request) {
+      const posts = await getPosts();
+      
+      return posts.map(post => {
+        return { 
+          loc: `/posts/${post.slug}`, 
+          lastmod: post.updatedAt,
+          // acts only in this loc
+          alternateRefs: [
+            {
+              href: 'https://en.example.com',
+              hreflang: 'en'
+            },
+            {
+              href: 'https://es.example.com',
+              hreflang: 'es'
+            }
+          ]
+        }
+      })
+    }
+  }
 };
 ```
 
 ## Exclude Route
 ```ts
 // app/routes/private.tsx
-import type { SitemapFunction } from 'remix-sitemap';
+import type { SitemapHandle } from 'remix-sitemap';
 
-export const sitemap: SitemapFunction = () => ({
-  exclude: true
-})
+export const handle: SitemapHandle = {
+  sitemap: { 
+    exclude: true 
+  }
+};
 ```
 
 ## Google: News, Image and Video
 Url set can contain additional sitemaps defined by google. These are Google [news](https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap), [image](https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps) or [video](https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps).
-You can add these sitemaps in `sitemap function` by adding the `news`, `images` or `videos` property.
+You can add these sitemaps in `generateEntries`
 ```ts
-export const sitemap: SitemapFunction = () => ({
-  images: [{ loc: 'https://example.com/example.jpg' }],
-  news: [{
-    title: 'Random News',
-    date: '2023-03-15',
-    publication: {
-      name: 'The Example Times',
-      language: 'en'
+export const handle: SitemapHandle = {
+  sitemap: {
+    async generateEntries() {
+      return [
+        {
+          loc: '/news/random-news',
+          images: [{ loc: 'https://example.com/example.jpg' }],
+          news: [{
+            title: 'Random News',
+            date: '2023-03-15',
+            publication: {
+              name: 'The Example Times',
+              language: 'en'
+            }
+          }]
+        }
+      ]
     }
-  }]
-});
+  }
+}
+```
+
+
+## Usage with Optional Segments
+with optional segments layouts to has a static data like the languages you can add `values` to sitemap config
+> this is just an example for multiple language it is recommended to use the `alternateRefs` property
+```ts
+// app/routes/($lang).tsx
+import type { SitemapHandle } from 'remix-sitemap';
+
+export const handle: SitemapHandle = {
+  sitemap: { 
+    values: ['en', 'es']
+  }
+};
+```
+and the routes inside get the automapping with all of the defined `values`
+for example
+```
+routes/($lang)/blog.tsx -> https://example.com/blog
+                        -> https://example.com/en/blog
+                        -> https://example.com/es/blog
+```
+this also works with dynamic routes within the optional segment, with the values defined in the optional segment route you can avoid to returning the repeated entries with the optional segments in your `generateEntries`
+
+also if you don't have a layout for the optional segment, you can define it in the global config with the `optionalSegments` property
+```ts
+const { isSitemapUrl, sitemap } = createSitemapGenerator({
+  siteUrl: 'https://example.com',
+  optionalSegments: {
+    '($lang)': ['en', 'es']
+  }
+}) 
+```
+
+### How to disable it
+For avoid the default behaviour of the `optionalSegments` you can disable it with the `addOptionalSegments` property on the `handle`
+```ts
+// app/routes/($lang)/blog.$slug.tsx
+export const handle: SitemapHandle = {
+  sitemap: {
+    addOptionalSegments: false
+  }
+}
 ```
 
 
