@@ -2,7 +2,12 @@ import type { EntryContext } from '@remix-run/server-runtime';
 import type { RemixSitemapConfig, SitemapEntry } from '../lib/types';
 import { getOptionalSegmentData, getRouteData } from './data';
 import { buildSitemapUrl } from '../builders/sitemap';
-import { isDynamicPath, isLegacyValidEntry, isValidEntry } from './validations';
+import {
+  isDynamicPath,
+  isLegacyHandle,
+  isLegacyValidEntry,
+  isValidEntry
+} from './validations';
 import type { GetSitemapParams } from '../builders/sitemap';
 
 export type GetEntryParams = GetSitemapParams & {
@@ -11,6 +16,8 @@ export type GetEntryParams = GetSitemapParams & {
 
 export async function getEntry(params: GetEntryParams) {
   const { route, context, request, config } = params;
+
+  if (isLegacyHandle(route, context)) return getLegacyEntry(params);
 
   if (!isValidEntry(route, context)) return '';
 
@@ -50,7 +57,7 @@ export async function getLegacyEntry(params: GetEntryParams) {
 
   const { handle, path } = getRouteData(route, context);
 
-  const entriesPromise = handle.generateEntries
+  const entriesPromise = handle?.generateEntries
     ? handle.generateEntries(request)
     : null;
 

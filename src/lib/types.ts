@@ -74,11 +74,6 @@ export interface RemixSitemapConfig {
    * Headers to be added to the sitemap response.
    */
   headers?: HeadersInit;
-
-  /**
-   * use legacy handle way to generate sitemap
-   */
-  useLegacyHandle?: boolean;
 }
 
 export type Config = RemixSitemapConfig;

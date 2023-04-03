@@ -128,9 +128,7 @@ export async function buildSitemap(params: GetSitemapParams): Promise<string> {
   const routes = Object.keys(context.manifest.routes);
 
   const entriesPromise = routes.map(route =>
-    config.useLegacyHandle
-      ? getLegacyEntry({ route, config, context, request })
-      : getEntry({ route, config, context, request })
+    getEntry({ route, config, context, request })
   );
 
   const entries = (await Promise.all(entriesPromise)).join('');

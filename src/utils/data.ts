@@ -15,10 +15,12 @@ export function getRouteData(route: string, context: EntryContext) {
 
   const handle: SitemapHandle = module?.handle || {};
 
-  const defaultHandle = {
-    ...(handle.sitemap || {}),
-    addOptionalSegments: handle.sitemap?.addOptionalSegments ?? true
-  };
+  const defaultHandle = handle.sitemap
+    ? {
+        ...(handle.sitemap || {}),
+        addOptionalSegments: handle.sitemap?.addOptionalSegments ?? true
+      }
+    : undefined;
 
   const path = manifest.index ? '' : manifest.path ?? '';
 
@@ -30,6 +32,9 @@ export function getRouteData(route: string, context: EntryContext) {
     manifest,
     module,
     modules: context.routeModules,
+    /**
+     * @deprecated
+     */
     handle: defaultHandle,
     sitemapFunction: module?.sitemap,
     path,
@@ -51,7 +56,7 @@ export function getOptionalSegmentData(params: GetOptionalSegmentDataParams) {
 
   const values: Record<string, string[]> = {};
 
-  if (!handle.addOptionalSegments || !parents || parents.length <= 1)
+  if (!handle?.addOptionalSegments || !parents || parents.length <= 1)
     return null;
 
   parents.forEach((partialId, index) => {
