@@ -18,7 +18,7 @@ export const isRobotsUrl = (request: Request) => {
   return isEqual(url.pathname, `/robots.txt`);
 };
 
-export function isValidEntryV2(route: string, context: EntryContext) {
+export function isValidEntry(route: string, context: EntryContext) {
   const { manifest, path, module, sitemapFunction } = getRouteData(
     route,
     context
@@ -33,7 +33,10 @@ export function isValidEntryV2(route: string, context: EntryContext) {
   return true;
 }
 
-export function isValidEntry(route: string, context: EntryContext) {
+/**
+ * @deprecated
+ */
+export function isLegacyValidEntry(route: string, context: EntryContext) {
   const { manifest, handle, path, module } = getRouteData(route, context);
 
   if (manifest.id === 'root') return false;
