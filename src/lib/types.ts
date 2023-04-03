@@ -40,6 +40,11 @@ export interface RemixSitemapConfig {
   sitemapBaseFileName?: string;
 
   /**
+   * Format the sitemap.
+   */
+  format?: boolean;
+
+  /**
    * the xhtml:link properties.
    */
   alternateRefs?: AlternateRef[];
