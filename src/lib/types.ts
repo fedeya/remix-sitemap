@@ -44,6 +44,9 @@ export interface RemixSitemapConfig {
    */
   alternateRefs?: AlternateRef[];
 
+  /**
+   * @deprecated not used anymore in sitemap function
+   */
   optionalSegments?: Record<string, string[]>;
 
   /**
@@ -66,6 +69,11 @@ export interface RemixSitemapConfig {
    * Headers to be added to the sitemap response.
    */
   headers?: HeadersInit;
+
+  /**
+   * use legacy handle way to generate sitemap
+   */
+  useLegacyHandle?: boolean;
 }
 
 export type Config = RemixSitemapConfig;
@@ -145,6 +153,9 @@ export interface AlternateRef {
   absolute?: boolean;
 }
 
+/**
+ * @deprecated Use SitemapFunction instead.
+ */
 export interface SitemapHandle {
   sitemap?: Handle;
 }
@@ -188,3 +199,16 @@ export type Policy = {
    */
   userAgent: string;
 };
+
+export interface SitemapArgs {
+  config: Config;
+  request: Request;
+}
+
+export type SitemapDefinition =
+  | ({ exclude?: boolean } & Omit<SitemapEntry, 'loc'> & { loc?: string })
+  | ({ exclude?: boolean } & SitemapEntry)[];
+
+export type SitemapFunction = (
+  args: SitemapArgs
+) => Promise<SitemapDefinition> | SitemapDefinition;

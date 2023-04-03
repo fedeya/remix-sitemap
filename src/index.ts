@@ -5,7 +5,13 @@ import { isSitemapUrl, isRobotsUrl } from './utils/validations';
 import { getConfig } from './lib/config';
 import { robotsResponse } from './robots';
 
-export { SitemapHandle, RemixSitemapConfig, Config } from './lib/types';
+export {
+  SitemapHandle,
+  RemixSitemapConfig,
+  Config,
+  SitemapFunction,
+  SitemapArgs
+} from './lib/types';
 
 export const createSitemapGenerator = (config: Config) => {
   const defaultConfig = getConfig(config);

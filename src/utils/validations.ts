@@ -19,6 +19,24 @@ export const isRobotsUrl = (request: Request) => {
 };
 
 export function isValidEntry(route: string, context: EntryContext) {
+  const { manifest, path, module, sitemapFunction } = getRouteData(
+    route,
+    context
+  );
+
+  if (manifest.id === 'root') return false;
+
+  if (!module.default && !sitemapFunction) return false;
+
+  if (isDynamicPath(path) && !sitemapFunction) return false;
+
+  return true;
+}
+
+/**
+ * @deprecated
+ */
+export function isLegacyValidEntry(route: string, context: EntryContext) {
   const { manifest, handle, path, module } = getRouteData(route, context);
 
   if (manifest.id === 'root') return false;

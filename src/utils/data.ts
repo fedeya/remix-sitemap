@@ -1,10 +1,17 @@
 import type { EntryContext } from '@remix-run/server-runtime';
-import type { Handle, RemixSitemapConfig, SitemapHandle } from '../lib/types';
+import type {
+  Handle,
+  RemixSitemapConfig,
+  SitemapFunction,
+  SitemapHandle
+} from '../lib/types';
 
 export function getRouteData(route: string, context: EntryContext) {
   const manifest = context.manifest.routes[route];
 
-  const module = context.routeModules[route];
+  const module = context.routeModules[
+    route
+  ] as (typeof context.routeModules)[string] & { sitemap?: SitemapFunction };
 
   const handle: SitemapHandle = module?.handle || {};
 
@@ -24,6 +31,7 @@ export function getRouteData(route: string, context: EntryContext) {
     module,
     modules: context.routeModules,
     handle: defaultHandle,
+    sitemapFunction: module?.sitemap,
     path,
     parents,
     parentId

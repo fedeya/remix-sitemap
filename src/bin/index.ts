@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import path from 'path';
 import fs from 'fs';
-import { getSitemap } from '../sitemap';
+import { buildSitemap } from '../builders/sitemap';
 import { getRoutesAndModules } from './routes';
 import { getConfig } from '../lib/config';
 import { getRobots } from '../robots';
@@ -35,7 +35,7 @@ async function main() {
 
   const { routes, modules } = await getRoutesAndModules();
 
-  const sitemap = await getSitemap({
+  const sitemap = await buildSitemap({
     config,
     context: {
       routeModules: modules,
