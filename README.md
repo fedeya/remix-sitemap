@@ -32,7 +32,7 @@ npm i remix-sitemap
 
 ## Usage
 For generate the sitemap we have 2 ways.
-### 1. Runtime Generation
+### Runtime Generation
 ```ts
 // entry.server.tsx
 import { createSitemapGenerator } from 'remix-sitemap';
@@ -66,7 +66,7 @@ export default async function handleRequest(
   });
 }
 ```
-### 2. Build time Generation (Experimental)
+### Build time Generation (Experimental)
 
 Create a `remix-sitemap.config.js` file at the project root
 ```ts
@@ -100,7 +100,6 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | priority (optional)                            | Priority. Default `0.7`                                                                |
 | autoLastmod (optional)                         | Add `<lastmod/>` property. Default `true`                                              |
 | sitemapBaseFileName (optional)                 | The name of the generated sitemap file before the file extension. Default `"sitemap"`  |
-| optionalSegments (optional)                    | possible values of optional segments                                                   |
 | alternateRefs (optional)                       | multi language support by unique url. Default `[]`                                     |
 | outDir (optional)                              | The directory to create the sitemaps files. Default `"public"`                         |
 | generateRobotsTxt (optional)                   | Generate `robots.txt` file. Default `false`                                            |
@@ -112,7 +111,7 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 ---
 
 ## Generate Sitemap for Dynamic Routes
-> If you are using build time generation, the request in `generateEntries` will be empty
+> If you are using build time generation, the request will be empty
 ```ts
 // app/routes/posts.$slug.tsx
 import type { SitemapFunction } from 'remix-sitemap';

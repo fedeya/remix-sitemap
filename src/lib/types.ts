@@ -44,6 +44,9 @@ export interface RemixSitemapConfig {
    */
   alternateRefs?: AlternateRef[];
 
+  /**
+   * @deprecated not used anymore in sitemap function
+   */
   optionalSegments?: Record<string, string[]>;
 
   /**
@@ -150,6 +153,9 @@ export interface AlternateRef {
   absolute?: boolean;
 }
 
+/**
+ * @deprecated Use SitemapFunction instead.
+ */
 export interface SitemapHandle {
   sitemap?: Handle;
 }
