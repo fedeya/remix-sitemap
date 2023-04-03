@@ -10,7 +10,7 @@ import type {
 } from '../lib/types';
 import { getBooleanValue, getOptionalValue } from '../utils/xml';
 import type { EntryContext } from '@remix-run/server-runtime';
-import { getLegacyEntry, getEntry } from '../utils/entries';
+import { getEntry } from '../utils/entries';
 
 export const getAlternateRef = (alternateRefs: AlternateRef) => ({
   '@_rel': 'alternate',
