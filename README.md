@@ -127,7 +127,7 @@ export const sitemap: SitemapFunction = ({ config, request }) => {
     alternateRefs: [
       {
         href: `${config.siteUrl}/en/posts/${post.slug}`,
-        absolute: true
+        absolute: true,
         hreflang: 'en'
       },
       {
