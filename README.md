@@ -93,22 +93,19 @@ For example if you are using `npm-run-all`
 ## Config
 This library is a little inspired in [next-sitemap](https://www.npmjs.com/package/next-sitemap) so the config is pretty much the same
 
-| Property                                       | Description                                                                            |
-| ---------------------------------------------- | -------------------------------------------------------------------------------------- |
-| siteUrl                                        | Base url of your website                                                               |
-| changefreq (optional)                          | Change frequency. Default `daily`                                                      |
-| priority (optional)                            | Priority. Default `0.7`                                                                |
-| autoLastmod (optional)                         | Add `<lastmod/>` property. Default `true`                                              |
-| sitemapBaseFileName (optional)                 | The name of the generated sitemap file before the file extension. Default `"sitemap"`  |
-| alternateRefs (optional)                       | multi language support by unique url. Default `[]`                                     |
-| outDir (optional)                              | The directory to create the sitemaps files. Default `"public"`                         |
-| generateRobotsTxt (optional)                   | Generate `robots.txt` file. Default `false`                                            |
-| robotsTxtOptions.policies (optional)           | Policies for generating `robots.txt`                                                   |
-| robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                               |
-| format (optional)                              | Format the sitemap for better view. Default `false`                                    |
-| useLegacyHandle (optional)                     | Use legacy `export handle` [see legacy docs](./docs/legacy/README.md). Default `false` |
-
-
+| Property                                       | Description                                                                           |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------- |
+| siteUrl                                        | Base url of your website                                                              |
+| changefreq (optional)                          | Change frequency. Default `daily`                                                     |
+| priority (optional)                            | Priority. Default `0.7`                                                               |
+| autoLastmod (optional)                         | Add `<lastmod/>` property. Default `true`                                             |
+| sitemapBaseFileName (optional)                 | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
+| alternateRefs (optional)                       | multi language support by unique url. Default `[]`                                    |
+| outDir (optional)                              | The directory to create the sitemaps files. Default `"public"`                        |
+| generateRobotsTxt (optional)                   | Generate `robots.txt` file. Default `false`                                           |
+| robotsTxtOptions.policies (optional)           | Policies for generating `robots.txt`                                                  |
+| robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                              |
+| format (optional)                              | Format the sitemap for better view. Default `false`                                   |
 ---
 
 ## Generate Sitemap for Dynamic Routes
