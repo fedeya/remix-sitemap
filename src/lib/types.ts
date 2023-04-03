@@ -79,7 +79,7 @@ export interface RemixSitemapConfig {
 export type Config = RemixSitemapConfig;
 
 export interface SitemapEntry {
-  loc?: string;
+  loc: string;
   changefreq?: ChangeFreq;
   priority?: Priority;
   lastmod?: string;
@@ -205,11 +205,9 @@ export interface SitemapArgs {
   request: Request;
 }
 
-export interface SitemapFunctionEntry extends SitemapEntry {
-  exclude?: boolean;
-}
-
-export type SitemapDefinition = SitemapFunctionEntry | SitemapFunctionEntry[];
+export type SitemapDefinition =
+  | ({ exclude?: boolean } & Omit<SitemapEntry, 'loc'> & { loc?: string })
+  | ({ exclude?: boolean } & SitemapEntry)[];
 
 export type SitemapFunction = (
   args: SitemapArgs
