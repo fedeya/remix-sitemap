@@ -105,6 +105,7 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | generateRobotsTxt (optional)                   | Generate `robots.txt` file. Default `false`                                            |
 | robotsTxtOptions.policies (optional)           | Policies for generating `robots.txt`                                                   |
 | robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                               |
+| format (optional)                              | Format the sitemap for better view. Default `false`                                    |
 | useLegacyHandle (optional)                     | Use legacy `export handle` [see legacy docs](./docs/legacy/README.md). Default `false` |
 
 
