@@ -80,7 +80,10 @@ export async function getEntryV2(params: GetEntryParams) {
 
     if (sitemap.exclude) return '';
 
-    return buildSitemapUrl({ config, entry: sitemap });
+    return buildSitemapUrl({
+      config,
+      entry: { ...sitemap, loc: sitemap.loc || path }
+    });
   }
 
   return buildSitemapUrl({ config, entry: { loc: path } });
@@ -89,7 +92,7 @@ export async function getEntryV2(params: GetEntryParams) {
 export async function getEntry(params: GetEntryParams) {
   const { route, context, request, config } = params;
 
-  if (config.future?.sitemapFunction) return getEntryV2(params);
+  if (!config.useLegacyHandle) return getEntryV2(params);
 
   if (!isValidEntry(route, context)) return '';
 

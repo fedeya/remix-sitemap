@@ -67,9 +67,10 @@ export interface RemixSitemapConfig {
    */
   headers?: HeadersInit;
 
-  future?: {
-    sitemapFunction?: boolean;
-  };
+  /**
+   * use legacy handle way to generate sitemap
+   */
+  useLegacyHandle: boolean;
 }
 
 export type Config = RemixSitemapConfig;
@@ -200,7 +201,6 @@ export interface SitemapArgs {
 
 export interface SitemapFunctionEntry extends SitemapEntry {
   exclude?: boolean;
-  addOptionalSegments?: boolean;
 }
 
 export type SitemapDefinition = SitemapFunctionEntry | SitemapFunctionEntry[];
