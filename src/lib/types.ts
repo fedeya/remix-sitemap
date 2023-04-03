@@ -70,7 +70,7 @@ export interface RemixSitemapConfig {
   /**
    * use legacy handle way to generate sitemap
    */
-  useLegacyHandle: boolean;
+  useLegacyHandle?: boolean;
 }
 
 export type Config = RemixSitemapConfig;
