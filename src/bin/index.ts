@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 import path from 'path';
 import fs from 'fs';
-import { buildSitemap } from '../builders/sitemap';
+import {
+  buildSitemap,
+  buildSitemapIndex,
+  buildSitemaps
+} from '../builders/sitemap';
 import { getRoutesAndModules } from './routes';
 import { getConfig } from '../lib/config';
 import { getRobots } from '../robots';
@@ -35,7 +39,7 @@ async function main() {
 
   const { routes, modules } = await getRoutesAndModules();
 
-  const sitemap = await buildSitemap({
+  const params = {
     config,
     context: {
       routeModules: modules,
@@ -44,7 +48,11 @@ async function main() {
       }
     } as unknown as EntryContext,
     request: {} as unknown as Request
-  });
+  };
+
+  const sitemap = config.size
+    ? await buildSitemaps(params)
+    : await buildSitemap(params);
 
   if (config.generateRobotsTxt) {
     const robots = getRobots(config);
@@ -56,10 +64,33 @@ async function main() {
     }
   }
 
-  fs.writeFileSync(
-    path.join(dir, config.outDir, `${config.sitemapBaseFileName}.xml`),
-    sitemap
-  );
+  if (Array.isArray(sitemap)) {
+    const sitemapIndex = buildSitemapIndex(
+      sitemap.map((_, index) => `${config.sitemapBaseFileName}-${index}.xml`),
+      config
+    );
+
+    fs.writeFileSync(
+      path.join(dir, config.outDir, `${config.sitemapBaseFileName}.xml`),
+      sitemapIndex
+    );
+
+    sitemap.forEach((content, index) => {
+      fs.writeFileSync(
+        path.join(
+          dir,
+          config.outDir,
+          `${config.sitemapBaseFileName}-${index}.xml`
+        ),
+        content
+      );
+    });
+  } else {
+    fs.writeFileSync(
+      path.join(dir, config.outDir, `${config.sitemapBaseFileName}.xml`),
+      sitemap
+    );
+  }
 
   console.log('✨ Sitemap generated successfully');
 }

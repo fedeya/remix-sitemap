@@ -6,11 +6,13 @@ import type {
   News,
   Image,
   Video,
-  RemixSitemapConfig
+  Config
 } from '../lib/types';
 import { getBooleanValue, getOptionalValue } from '../utils/xml';
 import type { EntryContext } from '@remix-run/server-runtime';
 import { getEntry } from '../utils/entries';
+import { truthy } from '../utils/truthy';
+import { chunk } from '../utils/chunk';
 
 export const getAlternateRef = (alternateRefs: AlternateRef) => ({
   '@_rel': 'alternate',
@@ -65,40 +67,28 @@ export const getNews = (news: News) => ({
 });
 
 export const getUrl = (entry: SitemapEntry) => ({
-  url: {
-    loc: cleanDoubleSlashes(entry.loc),
-    lastmod: entry.lastmod,
-    changefreq: entry.changefreq,
-    priority: entry.priority,
-    'xhtml:link': entry.alternateRefs?.map(getAlternateRef),
-    'image:image': entry.images?.map(getImage),
-    'news:news': entry.news?.map(getNews),
-    'video:video': entry.videos?.map(getVideo)
-  }
+  loc: cleanDoubleSlashes(entry.loc),
+  lastmod: entry.lastmod,
+  changefreq: entry.changefreq,
+  priority: entry.priority,
+  'xhtml:link': entry.alternateRefs?.map(getAlternateRef),
+  'image:image': entry.images?.map(getImage),
+  'news:news': entry.news?.map(getNews),
+  'video:video': entry.videos?.map(getVideo)
 });
 
 export type BuildSitemapUrlParams = {
-  config: RemixSitemapConfig;
+  config: Config;
   entry?: SitemapEntry;
 };
 
-export function buildSitemapUrl({
-  config,
-  entry
-}: BuildSitemapUrlParams): string {
+export function buildSitemapUrl({ config, entry }: BuildSitemapUrlParams) {
   const alternateRefs = (entry?.alternateRefs || config.alternateRefs)?.map(
     ref => ({
       ...ref,
       href: ref.absolute ? ref.href : `${ref.href}/${entry?.loc}`
     })
   );
-
-  const builder = new XMLBuilder({
-    ignoreAttributes: false,
-    processEntities: false,
-    suppressEmptyNode: true,
-    format: config.format
-  });
 
   const url = getUrl({
     loc: `${config.siteUrl}/${entry?.loc}`,
@@ -113,11 +103,37 @@ export function buildSitemapUrl({
     news: entry?.news
   });
 
-  return builder.build(url);
+  return url;
+}
+
+type Urlset = ReturnType<typeof buildSitemapUrl>[];
+
+export function buildSitemapXml(urlset: Urlset, format?: boolean): string {
+  const builder = new XMLBuilder({
+    suppressEmptyNode: true,
+    ignoreAttributes: false,
+    processEntities: false,
+    format
+  });
+
+  return builder.build({
+    '?xml': {
+      '@_version': '1.0',
+      '@_encoding': 'UTF-8'
+    },
+    urlset: {
+      '@_xmlns': 'http://www.sitemaps.org/schemas/sitemap/0.9',
+      '@_xmlns:news': 'http://www.google.com/schemas/sitemap-news/0.9',
+      '@_xmlns:xhtml': 'http://www.w3.org/1999/xhtml',
+      '@_xmlns:image': 'http://www.google.com/schemas/sitemap-image/1.1',
+      '@_xmlns:video': 'http://www.google.com/schemas/sitemap-video/1.1',
+      url: urlset
+    }
+  });
 }
 
 export type GetSitemapParams = {
-  config: RemixSitemapConfig;
+  config: Config;
   context: EntryContext;
   request: Request;
 };
@@ -131,8 +147,33 @@ export async function buildSitemap(params: GetSitemapParams): Promise<string> {
     getEntry({ route, config, context, request })
   );
 
-  const entries = (await Promise.all(entriesPromise)).join('');
+  const entries = (await Promise.all(entriesPromise)).flat().flat();
 
+  return buildSitemapXml(entries.filter(truthy), config.format);
+}
+
+export async function buildSitemaps(params: GetSitemapParams) {
+  const { config, context, request } = params;
+
+  const routes = Object.keys(context.manifest.routes);
+
+  const entriesPromise = routes.map(route =>
+    getEntry({ route, config, context, request })
+  );
+
+  const entries = (await Promise.all(entriesPromise))
+    .flat()
+    .flat()
+    .filter(truthy);
+
+  const sitemaps = chunk(entries, config.size!);
+
+  return sitemaps.map(urls => {
+    return buildSitemapXml(urls, config.format);
+  }, []);
+}
+
+export function buildSitemapIndex(sitemaps: string[], config: Config): string {
   const builder = new XMLBuilder({
     suppressEmptyNode: true,
     ignoreAttributes: false,
@@ -145,14 +186,11 @@ export async function buildSitemap(params: GetSitemapParams): Promise<string> {
       '@_version': '1.0',
       '@_encoding': 'UTF-8'
     },
-    urlset: {
+    sitemapindex: {
       '@_xmlns': 'http://www.sitemaps.org/schemas/sitemap/0.9',
-      '@_xmlns:news': 'http://www.google.com/schemas/sitemap-news/0.9',
-      '@_xmlns:xhtml': 'http://www.w3.org/1999/xhtml',
-      '@_xmlns:mobile': 'http://www.google.com/schemas/sitemap-mobile/1.0',
-      '@_xmlns:image': 'http://www.google.com/schemas/sitemap-image/1.1',
-      '@_xmlns:video': 'http://www.google.com/schemas/sitemap-video/1.1',
-      '#text': entries
+      sitemap: sitemaps.map(sitemap => ({
+        loc: cleanDoubleSlashes(`${config.siteUrl}/${sitemap}`)
+      }))
     }
   });
 }

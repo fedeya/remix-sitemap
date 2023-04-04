@@ -19,7 +19,7 @@ export async function getEntry(params: GetEntryParams) {
 
   if (isLegacyHandle(route, context)) return getLegacyEntry(params);
 
-  if (!isValidEntry(route, context)) return '';
+  if (!isValidEntry(route, context)) return null;
 
   const { sitemapFunction, path } = getRouteData(route, context);
 
@@ -31,12 +31,10 @@ export async function getEntry(params: GetEntryParams) {
     if (Array.isArray(sitemap)) {
       const notExcluded = sitemap.filter(entry => !entry.exclude);
 
-      return notExcluded
-        .map(entry => buildSitemapUrl({ config, entry }))
-        .join('');
+      return notExcluded.map(entry => buildSitemapUrl({ config, entry }));
     }
 
-    if (sitemap.exclude) return '';
+    if (sitemap.exclude) return null;
 
     return buildSitemapUrl({
       config,
@@ -53,7 +51,7 @@ export async function getEntry(params: GetEntryParams) {
 export async function getLegacyEntry(params: GetEntryParams) {
   const { route, context, request, config } = params;
 
-  if (!isLegacyValidEntry(route, context)) return '';
+  if (!isLegacyValidEntry(route, context)) return null;
 
   const { handle, path } = getRouteData(route, context);
 
@@ -78,8 +76,7 @@ export async function getLegacyEntry(params: GetEntryParams) {
       entries
     });
 
-  if (entries)
-    return entries?.map(entry => buildSitemapUrl({ config, entry })).join('');
+  if (entries) return entries?.map(entry => buildSitemapUrl({ config, entry }));
 
   return buildSitemapUrl({ config, entry: { loc: path } });
 }
@@ -165,5 +162,5 @@ export function getOptionalSegmentEntries(
     return finalEntry;
   });
 
-  return xml.flat().join('');
+  return xml.flat();
 }

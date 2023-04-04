@@ -66,6 +66,11 @@ export interface RemixSitemapConfig {
   generateRobotsTxt?: boolean;
 
   /**
+   * Size limit of each sitemap file.
+   */
+  size?: number;
+
+  /**
    * Options for robots.txt generation.
    */
   robotsTxtOptions?: RobotsTxtOptions;
