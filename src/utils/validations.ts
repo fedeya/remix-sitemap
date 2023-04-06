@@ -32,6 +32,8 @@ export function isValidEntry(route: string, context: EntryContext) {
 
   if (manifest.id === 'root') return false;
 
+  if (typeof path === 'undefined' && !sitemapFunction) return false;
+
   if (!module.default && !sitemapFunction) return false;
 
   if (isDynamicPath(path) && !sitemapFunction) return false;
@@ -48,6 +50,8 @@ export function isLegacyValidEntry(route: string, context: EntryContext) {
   if (manifest.id === 'root') return false;
 
   if (handle?.exclude) return false;
+
+  if (typeof path === 'undefined' && !handle) return false;
 
   if (!module.default && !handle?.generateEntries) return false;
 
