@@ -22,7 +22,8 @@ export function getRouteData(route: string, context: EntryContext) {
       }
     : undefined;
 
-  const path = manifest.index ? '' : manifest.path ?? '';
+  const path =
+    !manifest.path && manifest.parentId === 'root' ? '' : manifest?.path;
 
   const parents = manifest.id?.split('/').slice(0, -1);
 
