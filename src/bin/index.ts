@@ -50,7 +50,9 @@ async function main() {
     request: {} as unknown as Request
   };
 
-  const sitemap = config.size
+  const isSplitted = config.size && config.size > 0;
+
+  const sitemap = isSplitted
     ? await buildSitemaps(params)
     : await buildSitemap(params);
 
@@ -64,17 +66,20 @@ async function main() {
     }
   }
 
-  if (Array.isArray(sitemap)) {
-    const sitemapIndex = buildSitemapIndex(
-      sitemap.map((_, index) => `${config.sitemapBaseFileName}-${index}.xml`),
-      config
-    );
+  if (config.generateIndexSitemap) {
+    const sitemaps = Array.isArray(sitemap)
+      ? sitemap.map((_, index) => `${config.sitemapBaseFileName}-${index}.xml`)
+      : [`${config.sitemapBaseFileName}-0.xml`];
+
+    const sitemapIndex = buildSitemapIndex(sitemaps, config);
 
     fs.writeFileSync(
-      path.join(dir, config.outDir, `${config.sitemapBaseFileName}.xml`),
+      path.join(dir, config.outDir, 'sitemap.xml'),
       sitemapIndex
     );
+  }
 
+  if (Array.isArray(sitemap)) {
     sitemap.forEach((content, index) => {
       fs.writeFileSync(
         path.join(
