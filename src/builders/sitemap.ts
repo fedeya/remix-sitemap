@@ -168,9 +168,7 @@ export async function buildSitemaps(params: GetSitemapParams) {
 
   const sitemaps = chunk(entries, config.size!);
 
-  return sitemaps.map(urls => {
-    return buildSitemapXml(urls, config.format);
-  }, []);
+  return sitemaps.map(urls => buildSitemapXml(urls, config.format));
 }
 
 export function buildSitemapIndex(sitemaps: string[], config: Config): string {
