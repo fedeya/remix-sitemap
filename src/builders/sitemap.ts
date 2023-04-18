@@ -155,6 +155,9 @@ export async function buildSitemap(params: GetSitemapParams): Promise<string> {
 export async function buildSitemaps(params: GetSitemapParams) {
   const { config, context, request } = params;
 
+  if (!config.size)
+    throw new Error('You must specify a size for sitemap splitting');
+
   const routes = Object.keys(context.manifest.routes);
 
   const entriesPromise = routes.map(route =>
@@ -166,7 +169,7 @@ export async function buildSitemaps(params: GetSitemapParams) {
     .flat()
     .filter(truthy);
 
-  const sitemaps = chunk(entries, config.size!);
+  const sitemaps = chunk(entries, config.size);
 
   return sitemaps.map(urls => buildSitemapXml(urls, config.format));
 }
