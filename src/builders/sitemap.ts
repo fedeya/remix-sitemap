@@ -106,7 +106,7 @@ export function buildSitemapUrl({ config, entry }: BuildSitemapUrlParams) {
   return url;
 }
 
-type Urlset = ReturnType<typeof buildSitemapUrl>[];
+type Urlset = ReturnType<typeof getUrl>[];
 
 export function buildSitemapXml(urlset: Urlset, format?: boolean): string {
   const builder = new XMLBuilder({
