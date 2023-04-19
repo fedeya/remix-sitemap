@@ -164,10 +164,7 @@ export async function buildSitemaps(params: GetSitemapParams) {
     getEntry({ route, config, context, request })
   );
 
-  const entries = (await Promise.all(entriesPromise))
-    .flat()
-    .flat()
-    .filter(truthy);
+  const entries = (await Promise.all(entriesPromise)).flat(2).filter(truthy);
 
   const sitemaps = chunk(entries, config.size);
 
