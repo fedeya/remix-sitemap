@@ -107,7 +107,8 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | robotsTxtOptions.policies (optional)           | Policies for generating `robots.txt`                                                  |
 | robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                              |
 | format (optional)                              | Format the sitemap for better view. Default `false`                                   |
-| size (optional)                                | Max size of the sitemap. Default `50000`                                              |
+| size (optional)                                | Max size of the sitemap.                                                              |
+| generateIndexSitemap (optional)                | Generate index sitemap. Default `true` (build time only)                              |
 ---
 
 ## Generate Sitemap for Dynamic Routes
