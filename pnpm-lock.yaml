@@ -2,8 +2,8 @@ lockfileVersion: 5.4
 
 specifiers:
   '@esbuild-plugins/tsconfig-paths': ^0.1.2
-  '@remix-run/dev': ^1.14.3
-  '@remix-run/server-runtime': ^1.14.1
+  '@remix-run/dev': ^1.15.0
+  '@remix-run/server-runtime': ^1.15.0
   '@types/node': ^18.15.2
   '@types/require-from-string': ^1.2.1
   '@typescript-eslint/eslint-plugin': ^5.57.0
@@ -33,8 +33,8 @@ dependencies:
   ufo: 1.1.1
 
 devDependencies:
-  '@remix-run/dev': 1.14.3_@types+node@18.15.2
-  '@remix-run/server-runtime': 1.14.1
+  '@remix-run/dev': 1.15.0_@types+node@18.15.2
+  '@remix-run/server-runtime': 1.15.0
   '@types/node': 18.15.2
   '@types/require-from-string': 1.2.1
   '@typescript-eslint/eslint-plugin': 5.57.0_x4rubgibnu7ujqspfqdeho4yiu
@@ -2024,12 +2024,12 @@ packages:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: true
 
-  /@remix-run/dev/1.14.3_@types+node@18.15.2:
-    resolution: {integrity: sha512-46mmwiA/k9YDkg0UrP90UB3azVVWRXw16NLHRSbZiaaYe8XgUkddEtBnH/nBp/IrVCtzUL3LObplUe5sFk5Z9Q==}
+  /@remix-run/dev/1.15.0_@types+node@18.15.2:
+    resolution: {integrity: sha512-BsE1GN6WM9PhN+agZi4TqUIuYzoHYZrufEdXLg3ZEYxWXqvtRKUNfhsYSDlEhrW+D5fyVQhJrs61wQ83sEXHLQ==}
     engines: {node: '>=14'}
     hasBin: true
     peerDependencies:
-      '@remix-run/serve': ^1.14.3
+      '@remix-run/serve': ^1.15.0
     peerDependenciesMeta:
       '@remix-run/serve':
         optional: true
@@ -2045,7 +2045,7 @@ packages:
       '@babel/types': 7.21.3
       '@esbuild-plugins/node-modules-polyfill': 0.1.4_esbuild@0.16.3
       '@npmcli/package-json': 2.0.0
-      '@remix-run/server-runtime': 1.14.3
+      '@remix-run/server-runtime': 1.15.0
       '@vanilla-extract/integration': 6.2.1_@types+node@18.15.2
       arg: 5.0.2
       cacache: 15.3.0
@@ -2059,6 +2059,7 @@ packages:
       fast-glob: 3.2.11
       fs-extra: 10.1.0
       get-port: 5.1.1
+      glob-to-regexp: 0.4.1
       gunzip-maybe: 1.4.2
       inquirer: 8.2.5
       jsesc: 3.0.2
@@ -2101,29 +2102,16 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@remix-run/router/1.3.3:
-    resolution: {integrity: sha512-YRHie1yQEj0kqqCTCJEfHqYSSNlZQ696QJG+MMiW4mxSl9I0ojz/eRhJS4fs88Z5i6D1SmoF9d3K99/QOhI8/w==}
+  /@remix-run/router/1.5.0:
+    resolution: {integrity: sha512-bkUDCp8o1MvFO+qxkODcbhSqRa6P2GXgrGZVpt0dCXNW2HCSCqYI0ZoAqEOSAjRWmmlKcYgFvN4B4S+zo/f8kg==}
     engines: {node: '>=14'}
     dev: true
 
-  /@remix-run/server-runtime/1.14.1:
-    resolution: {integrity: sha512-GG/NBkkOBw1oZYJZJrvLh0s/pM6DDrFCwD/qWxrdBGNBt1vV1YmSRx2ablCDMXbLzGggshpy+BEatjv8pOkTlw==}
+  /@remix-run/server-runtime/1.15.0:
+    resolution: {integrity: sha512-DL9xjHfYYrEcOq5VbhYtrjJUWo/nFQAT7Y+Np/oC55HokyU6cb2jGhl52nx96aAxKwaFCse5N90GeodFsRzX7w==}
     engines: {node: '>=14'}
     dependencies:
-      '@remix-run/router': 1.3.3
-      '@types/cookie': 0.4.1
-      '@types/react': 18.0.28
-      '@web3-storage/multipart-parser': 1.0.0
-      cookie: 0.4.2
-      set-cookie-parser: 2.5.1
-      source-map: 0.7.4
-    dev: true
-
-  /@remix-run/server-runtime/1.14.3:
-    resolution: {integrity: sha512-qh8sxfLj/XW1u6rluN7yIgbvMCoKrVacYGUiPM7g0VHk8h8MlZGAIUfsWM45Poxo3X0uLhNuqqxMaPWldKawIQ==}
-    engines: {node: '>=14'}
-    dependencies:
-      '@remix-run/router': 1.3.3
+      '@remix-run/router': 1.5.0
       '@types/cookie': 0.4.1
       '@types/react': 18.0.28
       '@web3-storage/multipart-parser': 1.0.0
@@ -4252,6 +4240,10 @@ packages:
     engines: {node: '>=10.13.0'}
     dependencies:
       is-glob: 4.0.3
+    dev: true
+
+  /glob-to-regexp/0.4.1:
+    resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
     dev: true
 
   /glob/7.2.3:

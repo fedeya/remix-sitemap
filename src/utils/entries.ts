@@ -38,11 +38,11 @@ export async function getEntry(params: GetEntryParams) {
 
     return buildSitemapUrl({
       config,
-      entry: { ...sitemap, loc: sitemap.loc || path }
+      entry: { ...sitemap, loc: sitemap.loc || path! }
     });
   }
 
-  return buildSitemapUrl({ config, entry: { loc: path } });
+  return buildSitemapUrl({ config, entry: { loc: path! } });
 }
 
 /**
@@ -78,7 +78,7 @@ export async function getLegacyEntry(params: GetEntryParams) {
 
   if (entries) return entries?.map(entry => buildSitemapUrl({ config, entry }));
 
-  return buildSitemapUrl({ config, entry: { loc: path } });
+  return buildSitemapUrl({ config, entry: { loc: path! } });
 }
 
 type GetOptionalSegmentEntriesParams = {

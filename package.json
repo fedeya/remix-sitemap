@@ -1,6 +1,6 @@
 {
   "name": "remix-sitemap",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": false,
   "bin": {
     "remix-sitemap": "./dist/bin/index.js"
@@ -30,8 +30,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@remix-run/dev": "^1.14.3",
-    "@remix-run/server-runtime": "^1.14.1",
+    "@remix-run/dev": "^1.15.0",
+    "@remix-run/server-runtime": "^1.15.0",
     "@types/node": "^18.15.2",
     "@types/require-from-string": "^1.2.1",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
@@ -48,7 +48,7 @@
     "vitest": "^0.29.8"
   },
   "peerDependencies": {
-    "@remix-run/server-runtime": "^1.14.1"
+    "@remix-run/server-runtime": "^1.15.0"
   },
   "dependencies": {
     "@esbuild-plugins/tsconfig-paths": "^0.1.2",

@@ -23,6 +23,7 @@
 - Runtime Generation
 - Build time Generation (Experimental)
 - Generate `robots.txt`
+- v2 Route Convention Support
 
 ## Installation
 
