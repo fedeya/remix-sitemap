@@ -147,9 +147,9 @@ export async function buildSitemap(params: GetSitemapParams): Promise<string> {
     getEntry({ route, config, context, request })
   );
 
-  const entries = (await Promise.all(entriesPromise)).flat().flat();
+  const entries = (await Promise.all(entriesPromise)).flat().filter(truthy);
 
-  return buildSitemapXml(entries.filter(truthy), config.format);
+  return buildSitemapXml(entries, config.format);
 }
 
 export async function buildSitemaps(params: GetSitemapParams) {

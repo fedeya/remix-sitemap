@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 import path from 'path';
 import fs from 'fs';
-import {
-  buildSitemap,
-  buildSitemapIndex,
-  buildSitemaps
-} from '../builders/sitemap';
+import { buildSitemap, buildSitemaps } from '../builders/sitemap';
 import { getRoutesAndModules } from './routes';
 import { getConfig } from '../lib/config';
 import { getRobots } from '../robots';
 
 import './polyfill';
 import type { EntryContext } from '@remix-run/server-runtime';
+import {
+  createIndexSitemapFile,
+  createRobotsFile,
+  createSitemapFiles,
+  deleteOldSitemaps
+} from './files';
 
 const dir = path.resolve(process.cwd());
 
@@ -57,45 +59,16 @@ async function main() {
     : await buildSitemap(params);
 
   if (config.generateRobotsTxt) {
-    const robots = getRobots(config);
-
-    if (robots) {
-      fs.writeFileSync(path.join(dir, config.outDir, 'robots.txt'), robots);
-
-      console.log('✨ Robots.txt generated successfully');
-    }
+    createRobotsFile(config);
   }
+
+  deleteOldSitemaps(config);
 
   if (config.generateIndexSitemap) {
-    const sitemaps = Array.isArray(sitemap)
-      ? sitemap.map((_, index) => `${config.sitemapBaseFileName}-${index}.xml`)
-      : [`${config.sitemapBaseFileName}-0.xml`];
-
-    const sitemapIndex = buildSitemapIndex(sitemaps, config);
-
-    fs.writeFileSync(
-      path.join(dir, config.outDir, 'sitemap.xml'),
-      sitemapIndex
-    );
+    createIndexSitemapFile(sitemap, config);
   }
 
-  if (Array.isArray(sitemap)) {
-    sitemap.forEach((content, index) => {
-      fs.writeFileSync(
-        path.join(
-          dir,
-          config.outDir,
-          `${config.sitemapBaseFileName}-${index}.xml`
-        ),
-        content
-      );
-    });
-  } else {
-    fs.writeFileSync(
-      path.join(dir, config.outDir, `${config.sitemapBaseFileName}.xml`),
-      sitemap
-    );
-  }
+  createSitemapFiles(sitemap, config);
 
   console.log('✨ Sitemap generated successfully');
 }
