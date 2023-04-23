@@ -162,5 +162,5 @@ export function getOptionalSegmentEntries(
     return finalEntry;
   });
 
-  return xml.flat();
+  return xml.flat(2);
 }
