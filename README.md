@@ -106,6 +106,7 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | robotsTxtOptions.policies (optional)           | Policies for generating `robots.txt`                                                  |
 | robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                              |
 | format (optional)                              | Format the sitemap for better view. Default `false`                                   |
+| size (optional)                                | Max size of the sitemap. Default `50000`                                              |
 ---
 
 ## Generate Sitemap for Dynamic Routes
@@ -164,6 +165,16 @@ export const sitemap: SitemapFunction = () => ({
 });
 ```
 
+## Splitting Sitemaps
+If you have a lot of urls, you can split the sitemap in multiple files. You can do this by setting the `size` property in the config.
+> This is only available in build time generation
+```ts
+/** @type {import('remix-sitemap').Config} */
+module.exports = {
+  siteUrl: 'https://example.com',
+  size: 10000
+}
+```
 
 ## Author
 
