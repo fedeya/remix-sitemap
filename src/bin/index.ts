@@ -4,7 +4,6 @@ import fs from 'fs';
 import { buildSitemap, buildSitemaps } from '../builders/sitemap';
 import { getRoutesAndModules } from './routes';
 import { getConfig } from '../lib/config';
-import { getRobots } from '../robots';
 
 import './polyfill';
 import type { EntryContext } from '@remix-run/server-runtime';
