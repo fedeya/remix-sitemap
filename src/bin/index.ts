@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 import path from 'path';
 import fs from 'fs';
-import { buildSitemap } from '../builders/sitemap';
+import { buildSitemap, buildSitemaps } from '../builders/sitemap';
 import { getRoutesAndModules } from './routes';
 import { getConfig } from '../lib/config';
-import { getRobots } from '../robots';
 
 import './polyfill';
 import type { EntryContext } from '@remix-run/server-runtime';
+import {
+  createIndexSitemapFile,
+  createRobotsFile,
+  createSitemapFiles,
+  deleteOldSitemaps
+} from './files';
 
 const dir = path.resolve(process.cwd());
 
@@ -35,7 +40,7 @@ async function main() {
 
   const { routes, modules } = await getRoutesAndModules();
 
-  const sitemap = await buildSitemap({
+  const params = {
     config,
     context: {
       routeModules: modules,
@@ -44,22 +49,25 @@ async function main() {
       }
     } as unknown as EntryContext,
     request: {} as unknown as Request
-  });
+  };
+
+  const isSplitted = config.size && config.size > 0;
+
+  const sitemap = isSplitted
+    ? await buildSitemaps(params)
+    : await buildSitemap(params);
 
   if (config.generateRobotsTxt) {
-    const robots = getRobots(config);
-
-    if (robots) {
-      fs.writeFileSync(path.join(dir, config.outDir, 'robots.txt'), robots);
-
-      console.log('✨ Robots.txt generated successfully');
-    }
+    createRobotsFile(config);
   }
 
-  fs.writeFileSync(
-    path.join(dir, config.outDir, `${config.sitemapBaseFileName}.xml`),
-    sitemap
-  );
+  deleteOldSitemaps(config);
+
+  if (config.generateIndexSitemap) {
+    createIndexSitemapFile(sitemap, config);
+  }
+
+  createSitemapFiles(sitemap, config);
 
   console.log('✨ Sitemap generated successfully');
 }

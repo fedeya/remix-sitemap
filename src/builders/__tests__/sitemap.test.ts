@@ -1,5 +1,8 @@
 import { getConfig } from '../../lib/config';
-import { buildSitemapUrl } from '../sitemap';
+import { buildSitemapXml, buildSitemapUrl } from '../sitemap';
+
+const getUrlSetXml = (urls: string) =>
+  `<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\" xmlns:news=\\"http://www.google.com/schemas/sitemap-news/0.9\\" xmlns:xhtml=\\"http://www.w3.org/1999/xhtml\\" xmlns:image=\\"http://www.google.com/schemas/sitemap-image/1.1\\" xmlns:video=\\"http://www.google.com/schemas/sitemap-video/1.1\\">${urls}</urlset>`;
 
 describe('sitemap builder', () => {
   const config = getConfig({
@@ -8,7 +11,7 @@ describe('sitemap builder', () => {
   });
 
   it('snapshot test for google images', () => {
-    const entry = buildSitemapUrl({
+    const url = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',
@@ -20,13 +23,17 @@ describe('sitemap builder', () => {
       }
     });
 
-    expect(entry).toMatchInlineSnapshot(`
-      "<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><image:image><image:loc>https://example.com/image.jpg</image:loc></image:image></url>"
+    const sitemap = buildSitemapXml([url]);
+
+    expect(sitemap).toMatchInlineSnapshot(`
+      "${getUrlSetXml(
+        '<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><image:image><image:loc>https://example.com/image.jpg</image:loc></image:image></url>'
+      )}"
     `);
   });
 
   it('snapshot test for google news', () => {
-    const entry = buildSitemapUrl({
+    const url = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',
@@ -43,13 +50,17 @@ describe('sitemap builder', () => {
       }
     });
 
-    expect(entry).toMatchInlineSnapshot(`
-      "<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><news:news><news:publication><news:name>Example</news:name><news:language>en</news:language></news:publication><news:publication_date>2021-01-01</news:publication_date><news:title>Example title</news:title></news:news></url>"
+    const sitemap = buildSitemapXml([url]);
+
+    expect(sitemap).toMatchInlineSnapshot(`
+      "${getUrlSetXml(
+        '<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><news:news><news:publication><news:name>Example</news:name><news:language>en</news:language></news:publication><news:publication_date>2021-01-01</news:publication_date><news:title>Example title</news:title></news:news></url>'
+      )}"
     `);
   });
 
   it('snapshot test for google video', () => {
-    const entry = buildSitemapUrl({
+    const url = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',
@@ -86,13 +97,17 @@ describe('sitemap builder', () => {
       }
     });
 
-    expect(entry).toMatchInlineSnapshot(`
-      "<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><video:video><video:thumbnail_loc>https://example.com/thumbnail.jpg</video:thumbnail_loc><video:title>Example video</video:title><video:description>Example video description</video:description><video:content_loc>https://example.com/video.mp4</video:content_loc><video:player_loc>https://example.com/player</video:player_loc><video:duration>60</video:duration><video:expiration_date>2021-01-01</video:expiration_date><video:rating>4.5</video:rating><video:view_count>100</video:view_count><video:publication_date>2021-01-01</video:publication_date><video:family_friendly>no</video:family_friendly><video:restriction relationship=\\"allow\\">US CA</video:restriction><video:price currency=\\"USD\\">1.99</video:price><video:requires_subscription>yes</video:requires_subscription><video:uploader info=\\"https://example.com/uploader\\">Example</video:uploader><video:live>yes</video:live><video:tag>example</video:tag><video:tag>video</video:tag></video:video></url>"
+    const sitemap = buildSitemapXml([url]);
+
+    expect(sitemap).toMatchInlineSnapshot(`
+      "${getUrlSetXml(
+        '<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><video:video><video:thumbnail_loc>https://example.com/thumbnail.jpg</video:thumbnail_loc><video:title>Example video</video:title><video:description>Example video description</video:description><video:content_loc>https://example.com/video.mp4</video:content_loc><video:player_loc>https://example.com/player</video:player_loc><video:duration>60</video:duration><video:expiration_date>2021-01-01</video:expiration_date><video:rating>4.5</video:rating><video:view_count>100</video:view_count><video:publication_date>2021-01-01</video:publication_date><video:family_friendly>no</video:family_friendly><video:restriction relationship=\\"allow\\">US CA</video:restriction><video:price currency=\\"USD\\">1.99</video:price><video:requires_subscription>yes</video:requires_subscription><video:uploader info=\\"https://example.com/uploader\\">Example</video:uploader><video:live>yes</video:live><video:tag>example</video:tag><video:tag>video</video:tag></video:video></url>'
+      )}"
     `);
   });
 
   it('snapshot test for alternateRefs', () => {
-    const entryUsingAbsolute = buildSitemapUrl({
+    const urlUsingAbsolute = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',
@@ -106,11 +121,15 @@ describe('sitemap builder', () => {
       }
     });
 
-    expect(entryUsingAbsolute).toMatchInlineSnapshot(`
-      "<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><xhtml:link rel=\\"alternate\\" hreflang=\\"en\\" href=\\"https://example.com/en/test\\"/></url>"
+    let sitemap = buildSitemapXml([urlUsingAbsolute]);
+
+    expect(sitemap).toMatchInlineSnapshot(`
+      "${getUrlSetXml(
+        '<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><xhtml:link rel=\\"alternate\\" hreflang=\\"en\\" href=\\"https://example.com/en/test\\"/></url>'
+      )}"
     `);
 
-    const entryUsingRelative = buildSitemapUrl({
+    const urlUsingRelative = buildSitemapUrl({
       config,
       entry: {
         loc: '/test',
@@ -123,8 +142,12 @@ describe('sitemap builder', () => {
       }
     });
 
-    expect(entryUsingRelative).toMatchInlineSnapshot(`
-      "<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><xhtml:link rel=\\"alternate\\" hreflang=\\"en\\" href=\\"https://example.com/en/test\\"/></url>"
+    sitemap = buildSitemapXml([urlUsingRelative]);
+
+    expect(sitemap).toMatchInlineSnapshot(`
+      "${getUrlSetXml(
+        '<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><xhtml:link rel=\\"alternate\\" hreflang=\\"en\\" href=\\"https://example.com/en/test\\"/></url>'
+      )}"
     `);
   });
 });

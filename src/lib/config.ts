@@ -7,6 +7,7 @@ export const getConfig = (config: Config) => {
     changefreq: config.changefreq ?? 'daily',
     priority: config.priority ?? 0.7,
     sitemapBaseFileName: config.sitemapBaseFileName ?? 'sitemap',
+    generateIndexSitemap: config.generateIndexSitemap ?? true,
     outDir: config.outDir ?? 'public',
     robotsTxtOptions: {
       ...(config.robotsTxtOptions || {}),
