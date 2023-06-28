@@ -108,7 +108,7 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                              |
 | format (optional)                              | Format the sitemap for better view. Default `false`                                   |
 | size (optional)                                | Max size of the sitemap.                                                              |
-| generateIndexSitemap (optional)                | Generate index sitemap. **Default** `true` (build time only)                          |
+| generateIndexSitemap (optional)                | Generate index sitemap. Default `true` (build time only)                              |
 | headers (optional)                             | Headers for the sitemap and robots.txt response.                                      |
 | cache (optional)                               | Cache the sitemap. (runtime only)                                                     |
 ---
