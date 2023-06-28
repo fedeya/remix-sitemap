@@ -7,11 +7,31 @@ export async function sitemapResponse(
   request: Request,
   context: EntryContext
 ) {
+  const { cache } = config;
+
+  if (cache) {
+    const cached = await cache.get();
+
+    if (cached) {
+      const bytes = new TextEncoder().encode(cached).byteLength;
+
+      return new Response(cached, {
+        headers: {
+          ...(config.headers || {}),
+          'Content-Type': 'application/xml',
+          'Content-Length': bytes.toString()
+        }
+      });
+    }
+  }
+
   const sitemap = await buildSitemap({
     config,
     context,
     request
   });
+
+  if (cache) await cache.set(sitemap);
 
   const bytes = new TextEncoder().encode(sitemap).byteLength;
 

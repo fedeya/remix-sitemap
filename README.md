@@ -108,7 +108,9 @@ This library is a little inspired in [next-sitemap](https://www.npmjs.com/packag
 | robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                              |
 | format (optional)                              | Format the sitemap for better view. Default `false`                                   |
 | size (optional)                                | Max size of the sitemap.                                                              |
-| generateIndexSitemap (optional)                | Generate index sitemap. Default `true` (build time only)                              |
+| generateIndexSitemap (optional)                | Generate index sitemap. **Default** `true` (build time only)                          |
+| headers (optional)                             | Headers for the sitemap and robots.txt response.                                      |
+| cache (optional)                               | Cache the sitemap. (runtime only)                                                     |
 ---
 
 ## Generate Sitemap for Dynamic Routes
@@ -176,6 +178,32 @@ module.exports = {
   siteUrl: 'https://example.com',
   size: 10000
 }
+```
+
+## Caching
+you have two ways to cache the sitemap, the first one is using the `Cache-Control` header
+> This is only available in runtime generation
+```ts
+createSitemapGenerator({
+  siteUrl: 'https://example.com',
+  headers: {
+    'Cache-Control': 'max-age=3600'
+  }
+})
+```
+and the second one is using the `cache` property in the config
+```ts
+createSitemapGenerator({
+  siteUrl: 'https://example.com',
+  cache: {
+    get: async () => {
+      return await redis.get('sitemap') || null;
+    },
+    set: async (sitemap) => {
+      await redis.set('sitemap', sitemap, 'EX', 3600);
+    }
+  }
+})
 ```
 
 ## Author
