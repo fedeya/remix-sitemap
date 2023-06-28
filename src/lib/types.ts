@@ -85,6 +85,16 @@ export interface RemixSitemapConfig {
    * Headers to be added to the sitemap response.
    */
   headers?: HeadersInit;
+
+  /**
+   * The cache to use.
+   */
+  cache?: Cache;
+}
+
+export interface Cache {
+  get(): Promise<string | null>;
+  set(sitemap: string): Promise<void>;
 }
 
 export type Config = RemixSitemapConfig;
