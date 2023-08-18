@@ -199,11 +199,11 @@ createSitemapGenerator({
 - `generateRobotsTxt = false`: (*optional*) generate `robots.txt` file.
 - `robotsTxtOptions`: (*optional*) options for generating `robots.txt` [details](#RobotsTxtOptions).
 
-##### Runtime only
+**Runtime only**
 - `headers = {}`: (*optional*) headers for the sitemap and robots.txt response.
 - `cache`: (*optional*) cache the sitemap [details](#Caching).
 
-##### Build Time only
+**Build Time only**
 - `generateIndexSitemap = true`: (*optional*) generate index sitemap.
 - `sitemapBaseFileName = 'sitemap'`: (*optional*) the name of the generated sitemap file before the file extension.
 - `outDir = 'public'`: (*optional*) the directory to create the sitemaps files.
