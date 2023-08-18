@@ -91,28 +91,6 @@ For example if you are using `npm-run-all`
 }
 ```
 
-## Config
-This library is a little inspired in [next-sitemap](https://www.npmjs.com/package/next-sitemap) so the config is pretty much the same
-
-| Property                                       | Description                                                                           |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------- |
-| siteUrl                                        | Base url of your website                                                              |
-| changefreq (optional)                          | Change frequency. Default `daily`                                                     |
-| priority (optional)                            | Priority. Default `0.7`                                                               |
-| autoLastmod (optional)                         | Add `<lastmod/>` property. Default `true`                                             |
-| sitemapBaseFileName (optional)                 | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
-| alternateRefs (optional)                       | multi language support by unique url. Default `[]`                                    |
-| outDir (optional)                              | The directory to create the sitemaps files. Default `"public"`                        |
-| generateRobotsTxt (optional)                   | Generate `robots.txt` file. Default `false`                                           |
-| robotsTxtOptions.policies (optional)           | Policies for generating `robots.txt`                                                  |
-| robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                              |
-| format (optional)                              | Format the sitemap for better view. Default `false`                                   |
-| size (optional)                                | Max size of the sitemap.                                                              |
-| generateIndexSitemap (optional)                | Generate index sitemap. Default `true` (build time only)                              |
-| headers (optional)                             | Headers for the sitemap and robots.txt response.                                      |
-| cache (optional)                               | Cache the sitemap. (runtime only)                                                     |
----
-
 ## Generate Sitemap for Dynamic Routes
 > If you are using build time generation, the request will be empty
 ```ts
@@ -205,6 +183,36 @@ createSitemapGenerator({
   }
 })
 ```
+
+## API Reference
+
+### Configuration
+
+#### Parameters
+
+- `siteUrl`: the website base url
+- `autoLastmod = true`: (*optional*) Add `<lastmod />` property with the current date.
+- `priority = 0.7`: (*optional*) default priority for all entries.
+- `changefreq = 'daily'`: (*optional*) default changefreq for all entries.
+- `format = false`: (*optional*) format the sitemap for a better view.
+- `alternateRefs = []`: (*optional*) default multi language support by unique url for all entries.
+- `generateRobotsTxt = false`: (*optional*) generate `robots.txt` file.
+- `robotsTxtOptions`: (*optional*) options for generating `robots.txt` [details](#RobotsTxtOptions).
+
+##### Runtime only
+- `headers = {}`: (*optional*) headers for the sitemap and robots.txt response.
+- `cache`: (*optional*) cache the sitemap [details](#Caching).
+
+##### Build Time only
+- `generateIndexSitemap = true`: (*optional*) generate index sitemap.
+- `sitemapBaseFileName = 'sitemap'`: (*optional*) the name of the generated sitemap file before the file extension.
+- `outDir = 'public'`: (*optional*) the directory to create the sitemaps files.
+- `size = 50000`: (*optional*) max size of the sitemap.
+
+#### RobotsTxtOptions
+- `policies = []`: (*optional*) policies for generating `robots.txt`.
+- `additionalSitemaps = []`: (*optional*) add additionals sitemaps to `robots.txt`.
+
 
 ## Author
 
