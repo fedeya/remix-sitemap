@@ -20,10 +20,10 @@
 
 ### Features
 
-- Runtime Generation
-- Build time Generation (Experimental)
+- Runtime & Build time Generation
 - Generate `robots.txt`
 - v2 Route Convention Support
+- Splitting Sitemaps
 
 ## Installation
 
@@ -32,7 +32,6 @@ npm i remix-sitemap
 ```
 
 ## Usage
-For generate the sitemap we have 2 ways.
 ### Runtime Generation
 ```ts
 // entry.server.tsx
@@ -67,7 +66,7 @@ export default async function handleRequest(
   });
 }
 ```
-### Build time Generation (Experimental)
+### Build time Generation 
 
 Create a `remix-sitemap.config.js` file at the project root
 ```ts
@@ -187,8 +186,6 @@ createSitemapGenerator({
 ## API Reference
 
 ### Configuration
-
-#### Parameters
 
 - `siteUrl`: the website base url
 - `autoLastmod = true`: (*optional*) Add `<lastmod />` property with the current date.
