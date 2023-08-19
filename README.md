@@ -149,7 +149,7 @@ export const sitemap: SitemapFunction = () => ({
 })
 ```
 
-## Google: News, Image and Video
+### Google: News, Image and Video
 Url set can contain additional sitemaps defined by google. These are Google [news](https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap), [image](https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps) or [video](https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps).
 You can add these sitemaps in `sitemap function` by adding the `news`, `images` or `videos` property.
 ```ts
