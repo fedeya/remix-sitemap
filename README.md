@@ -16,23 +16,40 @@
 
 > Sitemap generator for Remix applications
 
-## Overview
-
-### Features
+## ✨ Features
 
 - Runtime & Build time Generation
 - Generate `robots.txt`
 - v2 Route Convention Support
 - Splitting Sitemaps
 
-## Installation
+## 📚 Table Of Contents
+- [Getting Started](#-getting-started)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Runtime Generation](#runtime-generation)
+    - [Build time Generation](#build-time-generation)
+- [Guides](#guides)
+    - [Generate Sitemap for Dynamic Routes](#generate-sitemap-for-dynamic-routes)
+    - [Exclude Route](#exclude-route)
+    - [Google: News, Image and Video](#google-news-image-and-video)
+    - [Splitting Sitemaps](#splitting-sitemaps)
+    - [Caching](#caching)
+- [API Reference](#api-reference)
+  - [Config](#config)
+
+
+## 🚀 Getting Started
+
+### Installation
 
 ```sh
 npm i remix-sitemap
 ```
 
-## Usage
-### Runtime Generation
+### Usage
+
+#### Runtime Generation
 ```ts
 // entry.server.tsx
 import { createSitemapGenerator } from 'remix-sitemap';
@@ -66,7 +83,7 @@ export default async function handleRequest(
   });
 }
 ```
-### Build time Generation 
+#### Build time Generation 
 
 Create a `remix-sitemap.config.js` file at the project root
 ```ts
@@ -90,7 +107,9 @@ For example if you are using `npm-run-all`
 }
 ```
 
-## Generate Sitemap for Dynamic Routes
+## Guides
+
+### Generate Sitemap for Dynamic Routes
 > If you are using build time generation, the request will be empty
 ```ts
 // app/routes/posts.$slug.tsx
@@ -119,7 +138,7 @@ export const sitemap: SitemapFunction = ({ config, request }) => {
 };
 ```
 
-## Exclude Route
+### Exclude Route
 ```ts
 // app/routes/private.tsx
 import type { SitemapFunction } from 'remix-sitemap';
@@ -146,7 +165,7 @@ export const sitemap: SitemapFunction = () => ({
 });
 ```
 
-## Splitting Sitemaps
+### Splitting Sitemaps
 If you have a lot of urls, you can split the sitemap in multiple files. You can do this by setting the `size` property in the config.
 > This is only available in build time generation
 ```ts
@@ -157,7 +176,7 @@ module.exports = {
 }
 ```
 
-## Caching
+### Caching
 you have two ways to cache the sitemap, the first one is using the `Cache-Control` header
 > This is only available in runtime generation
 ```ts
@@ -183,9 +202,9 @@ createSitemapGenerator({
 })
 ```
 
-## API Reference
+## 📚 API Reference
 
-### Configuration
+### ⚙️  Config
 
 - `siteUrl`: the website base url
 - `autoLastmod = true`: (*optional*) Add `<lastmod />` property with the current date.
