@@ -16,24 +16,41 @@
 
 > Sitemap generator for Remix applications
 
-## Overview
+## ✨ Features
 
-### Features
-
-- Runtime Generation
-- Build time Generation (Experimental)
+- Runtime & Build time Generation
 - Generate `robots.txt`
 - v2 Route Convention Support
+- Splitting Sitemaps
 
-## Installation
+## 📚 Table Of Contents
+
+- [Getting Started](#-getting-started)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Runtime Generation](#runtime-generation)
+    - [Build time Generation](#build-time-generation)
+- [Guides](#-guides)
+    - [Generate Sitemap for Dynamic Routes](#generate-sitemap-for-dynamic-routes)
+    - [Exclude Route](#exclude-route)
+    - [Google: News, Image and Video](#google-news-image-and-video)
+    - [Splitting Sitemaps](#splitting-sitemaps)
+    - [Caching](#caching)
+- [API Reference](#-api-reference)
+  - [Config](#config)
+
+
+## 🚀 Getting Started
+
+### Installation
 
 ```sh
 npm i remix-sitemap
 ```
 
-## Usage
-For generate the sitemap we have 2 ways.
-### Runtime Generation
+### Usage
+
+#### Runtime Generation
 ```ts
 // entry.server.tsx
 import { createSitemapGenerator } from 'remix-sitemap';
@@ -67,7 +84,7 @@ export default async function handleRequest(
   });
 }
 ```
-### Build time Generation (Experimental)
+#### Build time Generation 
 
 Create a `remix-sitemap.config.js` file at the project root
 ```ts
@@ -91,29 +108,9 @@ For example if you are using `npm-run-all`
 }
 ```
 
-## Config
-This library is a little inspired in [next-sitemap](https://www.npmjs.com/package/next-sitemap) so the config is pretty much the same
+## 📝 Guides
 
-| Property                                       | Description                                                                           |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------- |
-| siteUrl                                        | Base url of your website                                                              |
-| changefreq (optional)                          | Change frequency. Default `daily`                                                     |
-| priority (optional)                            | Priority. Default `0.7`                                                               |
-| autoLastmod (optional)                         | Add `<lastmod/>` property. Default `true`                                             |
-| sitemapBaseFileName (optional)                 | The name of the generated sitemap file before the file extension. Default `"sitemap"` |
-| alternateRefs (optional)                       | multi language support by unique url. Default `[]`                                    |
-| outDir (optional)                              | The directory to create the sitemaps files. Default `"public"`                        |
-| generateRobotsTxt (optional)                   | Generate `robots.txt` file. Default `false`                                           |
-| robotsTxtOptions.policies (optional)           | Policies for generating `robots.txt`                                                  |
-| robotsTxtOptions.additionalSitemaps (optional) | Add additionals sitemaps to `robots.txt`                                              |
-| format (optional)                              | Format the sitemap for better view. Default `false`                                   |
-| size (optional)                                | Max size of the sitemap.                                                              |
-| generateIndexSitemap (optional)                | Generate index sitemap. Default `true` (build time only)                              |
-| headers (optional)                             | Headers for the sitemap and robots.txt response.                                      |
-| cache (optional)                               | Cache the sitemap. (runtime only)                                                     |
----
-
-## Generate Sitemap for Dynamic Routes
+### Generate Sitemap for Dynamic Routes
 > If you are using build time generation, the request will be empty
 ```ts
 // app/routes/posts.$slug.tsx
@@ -142,7 +139,7 @@ export const sitemap: SitemapFunction = ({ config, request }) => {
 };
 ```
 
-## Exclude Route
+### Exclude Route
 ```ts
 // app/routes/private.tsx
 import type { SitemapFunction } from 'remix-sitemap';
@@ -152,7 +149,7 @@ export const sitemap: SitemapFunction = () => ({
 })
 ```
 
-## Google: News, Image and Video
+### Google: News, Image and Video
 Url set can contain additional sitemaps defined by google. These are Google [news](https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap), [image](https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps) or [video](https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps).
 You can add these sitemaps in `sitemap function` by adding the `news`, `images` or `videos` property.
 ```ts
@@ -169,7 +166,7 @@ export const sitemap: SitemapFunction = () => ({
 });
 ```
 
-## Splitting Sitemaps
+### Splitting Sitemaps
 If you have a lot of urls, you can split the sitemap in multiple files. You can do this by setting the `size` property in the config.
 > This is only available in build time generation
 ```ts
@@ -180,7 +177,7 @@ module.exports = {
 }
 ```
 
-## Caching
+### Caching
 you have two ways to cache the sitemap, the first one is using the `Cache-Control` header
 > This is only available in runtime generation
 ```ts
@@ -206,9 +203,37 @@ createSitemapGenerator({
 })
 ```
 
-## Author
+## 📖 API Reference
 
-👤 **Fedeya <hello@fedeminaya.com>**
+### Config
+
+- `siteUrl`: the website base url
+- `autoLastmod = true`: (*optional*) Add `<lastmod />` property with the current date.
+- `priority = 0.7`: (*optional*) default priority for all entries.
+- `changefreq = 'daily'`: (*optional*) default changefreq for all entries.
+- `format = false`: (*optional*) format the sitemap for a better view.
+- `alternateRefs = []`: (*optional*) default multi language support by unique url for all entries.
+- `generateRobotsTxt = false`: (*optional*) generate `robots.txt` file.
+- `robotsTxtOptions`: (*optional*) options for generating `robots.txt` [details](#RobotsTxtOptions).
+
+**Runtime only**
+- `headers = {}`: (*optional*) headers for the sitemap and robots.txt response.
+- `cache`: (*optional*) cache the sitemap [details](#Caching).
+
+**Build Time only**
+- `generateIndexSitemap = true`: (*optional*) generate index sitemap.
+- `sitemapBaseFileName = 'sitemap'`: (*optional*) the name of the generated sitemap file before the file extension.
+- `outDir = 'public'`: (*optional*) the directory to create the sitemaps files.
+- `size = 50000`: (*optional*) max size of the sitemap.
+
+#### RobotsTxtOptions
+- `policies = []`: (*optional*) policies for generating `robots.txt`.
+- `additionalSitemaps = []`: (*optional*) add additionals sitemaps to `robots.txt`.
+
+
+## 👤 Author
+
+ **Fedeya <hello@fedeminaya.com>**
 
 - Website: [fedeminaya.com](https://fedeminaya.com)
 - Twitter: [@fedeminaya](https://twitter.com/fedeminaya)
