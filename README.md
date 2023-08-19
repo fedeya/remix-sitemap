@@ -36,7 +36,7 @@
     - [Splitting Sitemaps](#splitting-sitemaps)
     - [Caching](#caching)
 - [API Reference](#-api-reference)
-  - [Config](#-config)
+  - [Config](#config)
 
 
 ## 🚀 Getting Started
@@ -107,7 +107,7 @@ For example if you are using `npm-run-all`
 }
 ```
 
-## Examples
+## 📝 Guides
 
 ### Generate Sitemap for Dynamic Routes
 > If you are using build time generation, the request will be empty
@@ -202,9 +202,9 @@ createSitemapGenerator({
 })
 ```
 
-## 📚 API Reference
+## 📖 API Reference
 
-### ⚙️ Config
+### Config
 
 - `siteUrl`: the website base url
 - `autoLastmod = true`: (*optional*) Add `<lastmod />` property with the current date.
@@ -230,9 +230,9 @@ createSitemapGenerator({
 - `additionalSitemaps = []`: (*optional*) add additionals sitemaps to `robots.txt`.
 
 
-## Author
+## 👤 Author
 
-👤 **Fedeya <hello@fedeminaya.com>**
+ **Fedeya <hello@fedeminaya.com>**
 
 - Website: [fedeminaya.com](https://fedeminaya.com)
 - Twitter: [@fedeminaya](https://twitter.com/fedeminaya)
