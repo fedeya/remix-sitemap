@@ -35,8 +35,8 @@
     - [Google: News, Image and Video](#google-news-image-and-video)
     - [Splitting Sitemaps](#splitting-sitemaps)
     - [Caching](#caching)
-- [API Reference](#api-reference)
-  - [Config](#config)
+- [API Reference](#-api-reference)
+  - [Config](#-config)
 
 
 ## 🚀 Getting Started
@@ -107,7 +107,7 @@ For example if you are using `npm-run-all`
 }
 ```
 
-## Guides
+## Examples
 
 ### Generate Sitemap for Dynamic Routes
 > If you are using build time generation, the request will be empty
@@ -204,7 +204,7 @@ createSitemapGenerator({
 
 ## 📚 API Reference
 
-### ⚙️  Config
+### ⚙️ Config
 
 - `siteUrl`: the website base url
 - `autoLastmod = true`: (*optional*) Add `<lastmod />` property with the current date.
