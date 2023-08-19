@@ -24,12 +24,13 @@
 - Splitting Sitemaps
 
 ## 📚 Table Of Contents
+
 - [Getting Started](#-getting-started)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Runtime Generation](#runtime-generation)
     - [Build time Generation](#build-time-generation)
-- [Guides](#guides)
+- [Guides](#-guides)
     - [Generate Sitemap for Dynamic Routes](#generate-sitemap-for-dynamic-routes)
     - [Exclude Route](#exclude-route)
     - [Google: News, Image and Video](#google-news-image-and-video)
