@@ -22,8 +22,7 @@ export function getRouteData(route: string, context: EntryContext) {
       }
     : undefined;
 
-  const path =
-    !manifest.path && manifest.parentId === 'root' ? '' : manifest?.path;
+  const path = getFullPath(route, context.manifest.routes);
 
   const parents = manifest.id?.split('/').slice(0, -1);
 
@@ -42,6 +41,17 @@ export function getRouteData(route: string, context: EntryContext) {
     parents,
     parentId
   };
+}
+
+export function getFullPath(
+  route: string,
+  routes: Record<string, { parentId?: string; path?: string }>
+): string | undefined {
+  const manifest = routes[route];
+
+  if (!manifest.parentId || manifest.parentId === 'root') return manifest.path;
+
+  return `${getFullPath(manifest.parentId, routes)}/${manifest.path}`;
 }
 
 type GetOptionalSegmentDataParams = {
