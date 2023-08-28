@@ -3,17 +3,25 @@
     "target": "ES2019",
     "rootDir": "./src",
     "allowJs": true,
-    "outDir": "./dist",
-    "module": "CommonJS",
+    "outDir": "./dist/esm",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "module": "ESNext",
+    "declarationDir": "./dist/@types",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "declaration": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "types": ["vitest/globals"]
+    "types": [
+      "vitest/globals"
+    ]
   },
-  "exclude": ["node_modules", "coverage"],
-  "include": ["src/**/*.ts"]
+  "exclude": [
+    "node_modules",
+    "coverage"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ]
 }
