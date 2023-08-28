@@ -2,19 +2,32 @@
   "name": "remix-sitemap",
   "version": "2.2.1",
   "private": false,
-  "bin": {
-    "remix-sitemap": "./dist/bin/index.js"
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
-  "main": "dist/index.js",
+  "bin": {
+    "remix-sitemap": "./dist/cli.mjs",
+    "remix-sitemap-cjs": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsup",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
     "prepublishOnly": "npm run build",
     "lint": "eslint ./src --ext .ts",
     "format": "prettier --write ./src",
-    "dev": "tsc -w"
+    "dev": "tsup --watch"
   },
   "keywords": [
     "remix",
@@ -44,6 +57,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.7",
+    "tsup": "^7.2.0",
     "typescript": "^4.9.5",
     "vitest": "^0.29.8"
   },
@@ -58,7 +72,6 @@
     "require-from-string": "^2.0.2",
     "ufo": "^1.1.1"
   },
-  "types": "./dist/index.d.ts",
   "description": "Sitemap generator for Remix applications",
   "repository": {
     "type": "git",
