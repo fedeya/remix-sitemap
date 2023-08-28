@@ -6,7 +6,7 @@
     "outDir": "./dist/esm",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "module": "ESNext",
+    "module": "CommonJS",
     "declarationDir": "./dist/@types",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
