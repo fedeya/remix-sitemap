@@ -49,7 +49,8 @@ export function getFullPath(
 ): string | undefined {
   const manifest = routes[route];
 
-  if (!manifest.parentId || manifest.parentId === 'root') return manifest.path;
+  if (!manifest.parentId || manifest.parentId === 'root' || !manifest.path)
+    return manifest.path;
 
   return `${getFullPath(manifest.parentId, routes)}/${manifest.path}`;
 }
