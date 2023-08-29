@@ -13,13 +13,12 @@ import {
   createSitemapFiles,
   deleteOldSitemaps
 } from './files';
-
-const dir = path.resolve(process.cwd());
+import { pathToFileURL } from 'url';
 
 const findConfig = () => {
-  const configPath = path.join(dir, 'remix-sitemap.config.js');
+  const configPath = path.resolve(process.cwd(), 'remix-sitemap.config.js');
 
-  if (fs.existsSync(configPath)) return configPath;
+  if (fs.existsSync(configPath)) return pathToFileURL(configPath).toString();
 };
 
 async function main() {
