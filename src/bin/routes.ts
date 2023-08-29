@@ -1,4 +1,4 @@
-import { readConfig } from '@remix-run/dev/dist/config';
+import { readConfig } from '@remix-run/dev/dist/config.js';
 import path from 'path';
 import { createModuleBuilder } from './moduleBuilder';
 import requireFromString from 'require-from-string';

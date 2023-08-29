@@ -13,8 +13,8 @@
     }
   },
   "bin": {
-    "remix-sitemap": "./dist/cli.mjs",
-    "remix-sitemap-cjs": "./dist/cli.js"
+    "remix-sitemap": "./dist/cli.js",
+    "remix-sitemap-esm": "./dist/cli.mjs"
   },
   "files": [
     "dist"

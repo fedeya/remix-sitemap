@@ -32,7 +32,7 @@ async function main() {
 
   console.log('🔍 Found config file:', configPath);
 
-  const configFile = await import(configPath);
+  const { default: configFile } = await import(configPath);
 
   const config = getConfig(configFile);
 
