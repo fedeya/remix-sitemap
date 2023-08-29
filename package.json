@@ -20,14 +20,14 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup-node",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
     "prepublishOnly": "npm run build",
     "lint": "eslint ./src --ext .ts",
     "format": "prettier --write ./src",
-    "dev": "tsup --watch"
+    "dev": "tsup-node --watch"
   },
   "keywords": [
     "remix",
