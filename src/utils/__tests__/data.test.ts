@@ -47,6 +47,7 @@ describe('getFullPath', () => {
         path: 'blog'
       },
       'blog._index': {
+        index: true,
         parentId: 'blog'
       }
     });
@@ -61,6 +62,7 @@ describe('getFullPath', () => {
       },
       'blog._index': {
         parentId: 'root',
+        index: true,
         path: 'blog'
       }
     });
@@ -79,10 +81,59 @@ describe('getFullPath', () => {
       },
       'admin.content._index': {
         parentId: 'admin',
-        path: 'content'
+        path: 'content',
+        index: true
       }
     });
 
     expect(path).toBe('admin/content');
+  });
+
+  test('should return path without layout in pathless layout', () => {
+    const path = getFullPath('_layout.contact', {
+      root: {
+        path: ''
+      },
+      _layout: {
+        parentId: 'root'
+      },
+      '_layout.contact': {
+        parentId: '_layout',
+        path: 'contact'
+      }
+    });
+
+    expect(path).toBe('contact');
+  });
+
+  test('should return empty string if is root index route', () => {
+    const path = getFullPath('_index', {
+      root: {
+        path: ''
+      },
+      _index: {
+        parentId: 'root',
+        index: true
+      }
+    });
+
+    expect(path).toBe('');
+  });
+
+  test('should return empty string if is a index of pathless layout', () => {
+    const path = getFullPath('_layout._index', {
+      root: {
+        path: ''
+      },
+      _layout: {
+        parentId: 'root'
+      },
+      '_layout._index': {
+        parentId: '_layout',
+        index: true
+      }
+    });
+
+    expect(path).toBe('');
   });
 });

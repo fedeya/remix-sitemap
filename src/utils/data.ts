@@ -15,6 +15,8 @@ export function getRouteData(route: string, context: EntryContext) {
 
   const handle: SitemapHandle = module?.handle || {};
 
+  console.log(context.manifest.routes);
+
   const defaultHandle = handle.sitemap
     ? {
         ...(handle.sitemap || {}),
@@ -45,14 +47,37 @@ export function getRouteData(route: string, context: EntryContext) {
 
 export function getFullPath(
   route: string,
-  routes: Record<string, { parentId?: string; path?: string }>
+  routes: Record<string, { parentId?: string; path?: string; index?: boolean }>
 ): string | undefined {
   const manifest = routes[route];
+
+  if (manifest.index) {
+    const parent = getFullPath(manifest.parentId || 'root', routes);
+
+    // check for pathless layout with index route or root parent
+    if (!manifest.path && !parent) return '';
+
+    if (manifest.path) {
+      if (parent) {
+        return `${parent}/${manifest.path}`;
+      }
+
+      return manifest.path;
+    }
+
+    return undefined;
+  }
 
   if (!manifest.parentId || manifest.parentId === 'root' || !manifest.path)
     return manifest.path;
 
-  return `${getFullPath(manifest.parentId, routes)}/${manifest.path}`;
+  const parent = getFullPath(manifest.parentId, routes);
+
+  if (parent) {
+    return `${parent}/${manifest.path}`;
+  }
+
+  return manifest.path;
 }
 
 type GetOptionalSegmentDataParams = {
