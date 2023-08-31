@@ -52,18 +52,12 @@ export function getFullPath(
   if (manifest.index) {
     const parent = getFullPath(manifest.parentId || 'root', routes);
 
-    // check for pathless layout with index route or root parent
+    // return empty path for (pathless layout/root layout) with index route
     if (!manifest.path && !parent) return '';
 
-    if (manifest.path) {
-      if (parent) {
-        return `${parent}/${manifest.path}`;
-      }
+    if (manifest.path && parent) return `${parent}/${manifest.path}`;
 
-      return manifest.path;
-    }
-
-    return undefined;
+    return manifest.path;
   }
 
   if (!manifest.parentId || manifest.parentId === 'root' || !manifest.path)
@@ -71,9 +65,7 @@ export function getFullPath(
 
   const parent = getFullPath(manifest.parentId, routes);
 
-  if (parent) {
-    return `${parent}/${manifest.path}`;
-  }
+  if (parent) return `${parent}/${manifest.path}`;
 
   return manifest.path;
 }
