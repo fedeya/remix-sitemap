@@ -15,8 +15,6 @@ export function getRouteData(route: string, context: EntryContext) {
 
   const handle: SitemapHandle = module?.handle || {};
 
-  console.log(context.manifest.routes);
-
   const defaultHandle = handle.sitemap
     ? {
         ...(handle.sitemap || {}),
