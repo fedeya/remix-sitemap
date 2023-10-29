@@ -83,7 +83,44 @@ export default async function handleRequest(
     headers: responseHeaders
   });
 }
+
 ```
+
+<details>
+    <summary>Usage with sitemap[.]xml route <strong>(experimental)</strong></summary>
+
+1. Create a `lib/sitemap.ts` file
+```ts
+// lib/sitemap.ts
+export const { experimental_sitemap, robots } = createSitemapGenerator({
+  siteUrl: 'https://example.com',
+  // configure other things here
+})
+```
+
+2. Create a `sitemap[.]xml` route
+```ts
+// app/routes/sitemap[.]xml.tsx
+import { routes } from '@remix-run/dev/server-build';
+import { experimental_sitemap } from '~/lib/sitemap';
+
+export const loader: LoaderFunction = async ({ request }) => {
+    return await experimental_sitemap(request, routes);
+}
+```
+
+
+3. Create a `robots[.]txt` route
+```ts
+// app/routes/robots[.]txt.tsx
+import { robots } from '~/lib/sitemap';
+
+export const loader: LoaderFunction = ({ request }) => {
+    return robots();
+}
+```
+</details>
+
 #### Build time Generation 
 
 Create a `remix-sitemap.config.js` file at the project root
