@@ -1,5 +1,4 @@
-import type { EntryContext } from '@remix-run/server-runtime';
-import type { RemixSitemapConfig, Routes } from './lib/types';
+import type { RemixSitemapConfig, Routes, EntryContext } from './lib/types';
 import { buildSitemap } from './builders/sitemap';
 
 export async function experimental_sitemapResponse(

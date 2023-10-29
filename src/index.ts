@@ -1,5 +1,4 @@
-import type { EntryContext } from '@remix-run/server-runtime';
-import type { Config, Routes } from './lib/types';
+import type { Config, Routes, EntryContext } from './lib/types';
 import { sitemapResponse, experimental_sitemapResponse } from './sitemap';
 import { isSitemapUrl, isRobotsUrl } from './utils/validations';
 import { getConfig } from './lib/config';
