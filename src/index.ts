@@ -1,5 +1,5 @@
 import type { Config, Routes, EntryContext } from './lib/types';
-import { sitemapResponse, experimental_sitemapResponse } from './sitemap';
+import { sitemapResponse } from './sitemap';
 import { isSitemapUrl, isRobotsUrl } from './utils/validations';
 import { getConfig } from './lib/config';
 import { robotsResponse } from './robots';
@@ -28,8 +28,22 @@ export const createSitemapGenerator = (config: Config) => {
 
     robots: () => robotsResponse(defaultConfig),
 
-    experimental_sitemap: (request: Request, routes: Routes) =>
-      experimental_sitemapResponse(defaultConfig, request, routes),
+    experimental_sitemap: (request: Request, routes: Routes) => {
+      const routeModules = Object.keys(routes).reduce(
+        (acc, route) => ({
+          ...acc,
+          [route]: routes[route].module
+        }),
+        {}
+      );
+
+      return sitemapResponse(defaultConfig, request, {
+        routeModules,
+        manifest: {
+          routes
+        }
+      });
+    },
 
     isSitemapUrl: (request: Request) =>
       isSitemapUrl(defaultConfig, request) ||
