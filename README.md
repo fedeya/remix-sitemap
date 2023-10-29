@@ -286,3 +286,7 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+
+## Acknowledgements
+
+- [nasa-gcn/remix-seo](https://github.com/nasa-gcn/remix-seo) for finding the posibility to use the server build at runtime.
