@@ -1,6 +1,6 @@
 import type { EntryContext } from '@remix-run/server-runtime';
-import type { Config } from './lib/types';
-import { sitemapResponse } from './sitemap';
+import type { Config, Routes } from './lib/types';
+import { sitemapResponse, experimental_sitemapResponse } from './sitemap';
 import { isSitemapUrl, isRobotsUrl } from './utils/validations';
 import { getConfig } from './lib/config';
 import { robotsResponse } from './robots';
@@ -26,6 +26,11 @@ export const createSitemapGenerator = (config: Config) => {
         return robotsResponse(defaultConfig);
       }
     },
+
+    robots: () => robotsResponse(defaultConfig),
+
+    experimental_sitemap: (request: Request, routes: Routes) =>
+      experimental_sitemapResponse(defaultConfig, request, routes),
 
     isSitemapUrl: (request: Request) =>
       isSitemapUrl(defaultConfig, request) ||

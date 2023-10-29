@@ -233,3 +233,27 @@ export type SitemapDefinition =
 export type SitemapFunction = (
   args: SitemapArgs
 ) => Promise<SitemapDefinition> | SitemapDefinition;
+
+export interface RouteModule {
+  default?: unknown;
+  sitemap?: SitemapFunction;
+}
+
+export interface RemixRoute {
+  path?: string;
+  id: string;
+  parentId?: string;
+  index?: boolean;
+  module: RouteModule;
+}
+
+export type RouteManifest = Omit<RemixRoute, 'module'>;
+
+export type Routes = Record<string, RemixRoute>;
+
+export interface EntryContext {
+  routeModules: Record<string, RouteModule>;
+  manifest: {
+    routes: Record<string, RouteManifest>;
+  };
+}

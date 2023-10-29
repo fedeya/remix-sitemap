@@ -6,7 +6,6 @@ import { getRoutesAndModules } from './routes';
 import { getConfig } from '../lib/config';
 
 import './polyfill';
-import type { EntryContext } from '@remix-run/server-runtime';
 import {
   createIndexSitemapFile,
   createRobotsFile,
@@ -46,7 +45,7 @@ async function main() {
       manifest: {
         routes
       }
-    } as unknown as EntryContext,
+    },
     request: {} as unknown as Request
   };
 

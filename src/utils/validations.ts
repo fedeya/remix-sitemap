@@ -1,6 +1,5 @@
-import type { EntryContext } from '@remix-run/server-runtime';
 import { isEqual } from 'ufo';
-import type { RemixSitemapConfig } from '../lib/types';
+import type { RemixSitemapConfig, EntryContext } from '../lib/types';
 import { getRouteData } from './data';
 
 export function isSitemapUrl(config: RemixSitemapConfig, request: Request) {
