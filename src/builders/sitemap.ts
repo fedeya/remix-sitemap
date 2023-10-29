@@ -6,10 +6,10 @@ import type {
   News,
   Image,
   Video,
-  Config
+  Config,
+  EntryContext
 } from '../lib/types';
 import { getBooleanValue, getOptionalValue } from '../utils/xml';
-import type { EntryContext } from '@remix-run/server-runtime';
 import { getEntry } from '../utils/entries';
 import { truthy } from '../utils/truthy';
 import { chunk } from '../utils/chunk';

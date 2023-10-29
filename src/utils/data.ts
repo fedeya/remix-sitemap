@@ -1,12 +1,9 @@
-import type { EntryContext } from '@remix-run/server-runtime';
-import type { SitemapFunction } from '../lib/types';
+import type { EntryContext } from '../lib/types';
 
 export function getRouteData(route: string, context: EntryContext) {
   const manifest = context.manifest.routes[route];
 
-  const module = context.routeModules[
-    route
-  ] as (typeof context.routeModules)[string] & { sitemap?: SitemapFunction };
+  const module = context.routeModules[route];
 
   const path = getFullPath(route, context.manifest.routes);
 
