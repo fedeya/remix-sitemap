@@ -112,7 +112,7 @@ export function buildSitemapXml(urlset: Urlset, format?: boolean): string {
   const builder = new XMLBuilder({
     suppressEmptyNode: true,
     ignoreAttributes: false,
-    processEntities: false,
+    processEntities: true,
     format
   });
 

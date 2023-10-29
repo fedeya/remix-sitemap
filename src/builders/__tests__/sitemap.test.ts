@@ -150,4 +150,31 @@ describe('sitemap builder', () => {
       )}"
     `);
   });
+
+  it('should process html entities', () => {
+    const url = buildSitemapUrl({
+      config,
+      entry: {
+        loc: '/test',
+        news: [
+          {
+            date: '2021-01-01',
+            publication: {
+              name: 'Example',
+              language: 'en'
+            },
+            title: 'Example title &'
+          }
+        ]
+      }
+    });
+
+    const sitemap = buildSitemapXml([url]);
+
+    expect(sitemap).toMatchInlineSnapshot(`
+      "${getUrlSetXml(
+        '<url><loc>https://example.com/test</loc><changefreq>daily</changefreq><priority>0.7</priority><news:news><news:publication><news:name>Example</news:name><news:language>en</news:language></news:publication><news:publication_date>2021-01-01</news:publication_date><news:title>Example title &amp;</news:title></news:news></url>'
+      )}"
+    `);
+  });
 });
