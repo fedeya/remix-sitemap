@@ -89,6 +89,8 @@ export default async function handleRequest(
 <details>
     <summary>Usage with sitemap[.]xml route <strong>(experimental)</strong></summary>
 
+<br>
+
 1. Create a `lib/sitemap.ts` file
 ```ts
 // lib/sitemap.ts
