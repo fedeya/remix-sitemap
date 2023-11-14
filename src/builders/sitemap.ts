@@ -1,5 +1,5 @@
-import { XMLBuilder } from 'fast-xml-parser';
 import { cleanDoubleSlashes } from 'ufo';
+import { XMLBuilder } from 'fast-xml-parser';
 import type {
   SitemapEntry,
   AlternateRef,
@@ -10,10 +10,10 @@ import type {
   EntryContext
 } from '../lib/types';
 import { getBooleanValue, getOptionalValue } from '../utils/xml';
+import { RateLimiter } from '../utils/rate-limiter';
 import { getEntry } from '../utils/entries';
 import { truthy } from '../utils/truthy';
 import { chunk } from '../utils/chunk';
-import { RateLimiter } from '../utils/rate-limiter';
 
 export const getAlternateRef = (alternateRefs: AlternateRef) => ({
   '@_rel': 'alternate',
@@ -145,6 +145,7 @@ async function IngestRoutes(params: GetSitemapParams) {
 
   if (config.rateLimit) {
     const limiter = new RateLimiter(config.rateLimit);
+
     const entriesPromise = routes.map(async route => {
       await limiter.allocate();
       const out = await getEntry({ route, config, context, request });
@@ -155,7 +156,6 @@ async function IngestRoutes(params: GetSitemapParams) {
     return (await Promise.all(entriesPromise)).flat().filter(truthy);
   } else {
     const entriesPromise = routes.map(route => getEntry({ route, config, context, request }));
-
     return (await Promise.all(entriesPromise)).flat().filter(truthy);
   }
 }
@@ -172,7 +172,6 @@ export async function buildSitemaps(params: GetSitemapParams) {
   const entries = await IngestRoutes(params);
 
   const sitemaps = chunk(entries, params.config.size);
-
   return sitemaps.map(urls => buildSitemapXml(urls, params.config.format));
 }
 
