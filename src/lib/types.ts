@@ -87,6 +87,11 @@ export interface RemixSitemapConfig {
   headers?: HeadersInit;
 
   /**
+   * Limit the number of routes processed at a time
+   */
+  rateLimit?: number;
+
+  /**
    * The cache to use.
    */
   cache?: Cache;

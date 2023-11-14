@@ -13,6 +13,7 @@ import { getBooleanValue, getOptionalValue } from '../utils/xml';
 import { getEntry } from '../utils/entries';
 import { truthy } from '../utils/truthy';
 import { chunk } from '../utils/chunk';
+import { RateLimiter } from '../utils/rate-limiter';
 
 export const getAlternateRef = (alternateRefs: AlternateRef) => ({
   '@_rel': 'alternate',
@@ -138,37 +139,41 @@ export type GetSitemapParams = {
   request: Request;
 };
 
-export async function buildSitemap(params: GetSitemapParams): Promise<string> {
+async function IngestRoutes(params: GetSitemapParams) {
   const { config, context, request } = params;
-
   const routes = Object.keys(context.manifest.routes);
 
-  const entriesPromise = routes.map(route =>
-    getEntry({ route, config, context, request })
-  );
+  if (config.rateLimit) {
+    const limiter = new RateLimiter(config.rateLimit);
+    const entriesPromise = routes.map(async route => {
+      await limiter.allocate();
+      const out = await getEntry({ route, config, context, request });
+      limiter.free();
+      return out;
+    });
 
-  const entries = (await Promise.all(entriesPromise)).flat().filter(truthy);
+    return (await Promise.all(entriesPromise)).flat().filter(truthy);
+  } else {
+    const entriesPromise = routes.map(route => getEntry({ route, config, context, request }));
 
-  return buildSitemapXml(entries, config.format);
+    return (await Promise.all(entriesPromise)).flat().filter(truthy);
+  }
+}
+
+export async function buildSitemap(params: GetSitemapParams): Promise<string> {
+  const entries = await IngestRoutes(params);
+  return buildSitemapXml(entries, params.config.format);
 }
 
 export async function buildSitemaps(params: GetSitemapParams) {
-  const { config, context, request } = params;
-
-  if (!config.size)
+  if (!params.config.size)
     throw new Error('You must specify a size for sitemap splitting');
 
-  const routes = Object.keys(context.manifest.routes);
+  const entries = await IngestRoutes(params);
 
-  const entriesPromise = routes.map(route =>
-    getEntry({ route, config, context, request })
-  );
+  const sitemaps = chunk(entries, params.config.size);
 
-  const entries = (await Promise.all(entriesPromise)).flat().filter(truthy);
-
-  const sitemaps = chunk(entries, config.size);
-
-  return sitemaps.map(urls => buildSitemapXml(urls, config.format));
+  return sitemaps.map(urls => buildSitemapXml(urls, params.config.format));
 }
 
 export function buildSitemapIndex(sitemaps: string[], config: Config): string {
