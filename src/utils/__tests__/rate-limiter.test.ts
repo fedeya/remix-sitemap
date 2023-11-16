@@ -1,3 +1,5 @@
+import { RateLimiter } from "../rate-limiter";
+
 describe('RateLimiter', () => {
   it('should not allow more than the rate limit to run concurrently', async () => {
     const limit = new RateLimiter(3);
