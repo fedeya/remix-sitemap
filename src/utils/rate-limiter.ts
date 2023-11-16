@@ -40,4 +40,11 @@ export class RateLimiter {
       this.active = Math.max(0, this.active - 1);
     }
   }
+
+  getProcessing(): number {
+    return this.active;
+  }
+  getWaiting(): number {
+    return this.queue.length;
+  }
 }

@@ -1,22 +1,29 @@
-import { RateLimiter } from "../rate-limiter";
+import { RateLimiter } from '../rate-limiter';
 
 describe('RateLimiter', () => {
   it('should not allow more than the rate limit to run concurrently', async () => {
     const limit = new RateLimiter(3);
     let activeTasks = 0;
-    const increaseActive = () => { activeTasks++; };
-    const decreaseActive = () => { activeTasks--; limit.free(); };
-    const tasks = Array(5).fill(null).map(async () => {
-      await limit.allocate();
+    const increaseActive = () => {
+      activeTasks++;
+    };
+    const decreaseActive = () => {
+      activeTasks--; limit.free();
+    };
+    const tasks = Array(5)
+      .fill(null).map(async () => {
+        await limit.allocate();
 
-      increaseActive();
-      expect(activeTasks).toBeLessThanOrEqual(3);
+        increaseActive();
+        expect(activeTasks).toBeLessThanOrEqual(3);
 
-       // Mock task duration (randomness to affect completion order)
-      await new Promise(resolve => setTimeout(resolve, 500 + 500*Math.random()));
-      decreaseActive();
-    });
-    await Promise.all(tasks);
+        // Mock task duration (randomness to affect completion order)
+        await new Promise(resolve =>
+          setTimeout(resolve, 500 + 500 * Math.random())
+        );
+        decreaseActive();
+      });
+      await Promise.all(tasks);
   });
 
   it('should queue tasks and execute them in order', async () => {
@@ -27,7 +34,7 @@ describe('RateLimiter', () => {
       taskOrder.push(id);
 
       // Mock task duration (randomness to affect completion order)
-      await new Promise(resolve => setTimeout(resolve, 500 + 500*Math.random()));
+      await new Promise(resolve => setTimeout(resolve, 500));
       limit.free();
     };
 
@@ -45,7 +52,7 @@ describe('RateLimiter', () => {
     };
 
     await Promise.all([mockTask(), mockTask()]);
-    // Check internal state or behavior to ensure it's handling this correctly
-    // This might depend on the implementation details of RateLimiter
+    expect(limit.getProcessing()).toEqual(0);
+    expect(limit.getWaiting()).toEqual(0);
   });
 });
