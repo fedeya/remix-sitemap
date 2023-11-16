@@ -19,9 +19,8 @@ export class RateLimiter {
     this.active = 0;
   }
 
-
   allocate(): Promise<void> {
-    return new Promise((res) => {
+    return new Promise(res => {
       if (this.active < this.rate) {
         this.active++;
         res();
@@ -38,7 +37,7 @@ export class RateLimiter {
       // just substitute the finished work with new work
       first();
     } else {
-      this.active = Math.max(0, this.active-1);
+      this.active = Math.max(0, this.active - 1);
     }
   }
 }
