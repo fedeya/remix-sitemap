@@ -31,7 +31,7 @@ export class RateLimiter {
   }
 
   free(): void {
-    const first = this.queue.pop();
+    const first = this.queue.shift();
     if (first) {
       // Don't change activity count
       // just substitute the finished work with new work
