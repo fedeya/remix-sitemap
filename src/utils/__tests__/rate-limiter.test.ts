@@ -28,11 +28,11 @@ describe('RateLimiter', () => {
 
   it('should queue tasks and execute them in order', async () => {
     const limit = new RateLimiter(2);
-    let taskOrder = [];
+    let taskOrder: number[] = [];
     const mockTask = async (id) => {
       await limit.allocate();
 
-      // Mock task duration (randomness to affect completion order)
+      // Make each task successively longer to ensure execution completion order
       await new Promise(resolve => setTimeout(resolve, 500 + 500*id));
 
       taskOrder.push(id);
@@ -42,6 +42,31 @@ describe('RateLimiter', () => {
     const tasks = [1, 2, 3, 4].map(id => mockTask(id));
     await Promise.all(tasks);
     expect(taskOrder).toEqual([1, 2, 3, 4]); // Ensure tasks are executed in the expected order
+    expect(limit.getProcessing()).toEqual(0);
+    expect(limit.getWaiting()).toEqual(0);
+  });
+
+  it('ensure too many tasks never run at once', async () => {
+    const maxConcurrent = 20;
+    const limit = new RateLimiter(maxConcurrent);
+    const mockTask = async () => {
+      await limit.allocate();
+
+      expect(limit.getProcessing()).toBeLessThanOrEqual(maxConcurrent);
+
+      // Mock task duration (randomness to affect completion order)
+      await new Promise(resolve => setTimeout(resolve, 500*Math.random()));
+
+      expect(limit.getProcessing()).toBeLessThanOrEqual(maxConcurrent);
+
+      limit.free();
+    };
+
+    const tasks = Array(100).fill().map(_ => mockTask);
+    await Promise.all(tasks);
+
+    expect(limit.getProcessing()).toEqual(0);
+    expect(limit.getWaiting()).toEqual(0);
   });
 
   it('should handle rapid calls to free correctly', async () => {
