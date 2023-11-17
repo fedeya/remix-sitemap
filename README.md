@@ -25,19 +25,26 @@
 
 ## 📚 Table Of Contents
 
-- [Getting Started](#-getting-started)
+- [✨ Features](#-features)
+- [📚 Table Of Contents](#-table-of-contents)
+- [🚀 Getting Started](#-getting-started)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Runtime Generation](#runtime-generation)
     - [Build time Generation](#build-time-generation)
-- [Guides](#-guides)
-    - [Generate Sitemap for Dynamic Routes](#generate-sitemap-for-dynamic-routes)
-    - [Exclude Route](#exclude-route)
-    - [Google: News, Image and Video](#google-news-image-and-video)
-    - [Splitting Sitemaps](#splitting-sitemaps)
-    - [Caching](#caching)
-- [API Reference](#-api-reference)
+- [📝 Guides](#-guides)
+  - [Generate Sitemap for Dynamic Routes](#generate-sitemap-for-dynamic-routes)
+  - [Exclude Route](#exclude-route)
+  - [Google: News, Image and Video](#google-news-image-and-video)
+  - [Splitting Sitemaps](#splitting-sitemaps)
+  - [Caching](#caching)
+- [📖 API Reference](#-api-reference)
   - [Config](#config)
+    - [RobotsTxtOptions](#robotstxtoptions)
+- [👤 Author](#-author)
+- [🤝 Contributing](#-contributing)
+- [Show your support](#show-your-support)
+- [Acknowledgements](#acknowledgements)
 
 
 ## 🚀 Getting Started
@@ -254,6 +261,7 @@ createSitemapGenerator({
 - `alternateRefs = []`: (*optional*) default multi language support by unique url for all entries.
 - `generateRobotsTxt = false`: (*optional*) generate `robots.txt` file.
 - `robotsTxtOptions`: (*optional*) options for generating `robots.txt` [details](#RobotsTxtOptions).
+- `rateLimit`: (*optional*) limits the number of `sitemap` functions that can execute at once.
 
 **Runtime only**
 - `headers = {}`: (*optional*) headers for the sitemap and robots.txt response.
