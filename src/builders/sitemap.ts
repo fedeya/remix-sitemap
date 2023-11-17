@@ -156,8 +156,8 @@ async function IngestRoutes(params: GetSitemapParams) {
     return (await Promise.all(entriesPromise)).flat().filter(truthy);
   } else {
     const entriesPromise = routes.map(route =>
-      getEntry({ route, config, context, request
-    }));
+      getEntry({ route, config, context, request })
+    );
 
     return (await Promise.all(entriesPromise)).flat().filter(truthy);
   }

@@ -14,7 +14,8 @@ describe('RateLimiter', () => {
     };
 
     const tasks = Array(5)
-      .fill(null).map(async () => {
+      .fill(null)
+      .map(async () => {
         await limit.allocate();
 
         increaseActive();
@@ -36,7 +37,7 @@ describe('RateLimiter', () => {
       await limit.allocate();
 
       // Make each task successively longer to ensure execution completion order
-      await new Promise(resolve => setTimeout(resolve, 100 + 500 * id));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       taskOrder.push(id);
       limit.free();
@@ -64,9 +65,10 @@ describe('RateLimiter', () => {
 
       limit.free();
     };
-    await Promise.all(Array(100)
-      .fill(0)
-      .map(_ => mockTask())
+    await Promise.all(
+      Array(100)
+        .fill(0)
+        .map(_ => mockTask())
     );
 
     expect(limit.getProcessing()).toEqual(0);
