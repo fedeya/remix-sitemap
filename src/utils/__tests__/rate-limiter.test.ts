@@ -4,12 +4,15 @@ describe('RateLimiter', () => {
   it('should not allow more than the rate limit to run concurrently', async () => {
     const limit = new RateLimiter(3);
     let activeTasks = 0;
+
     const increaseActive = () => {
       activeTasks++;
     };
+
     const decreaseActive = () => {
       activeTasks--; limit.free();
     };
+
     const tasks = Array(5)
       .fill(null).map(async () => {
         await limit.allocate();
@@ -23,17 +26,17 @@ describe('RateLimiter', () => {
         );
         decreaseActive();
       });
-      await Promise.all(tasks);
+    await Promise.all(tasks);
   });
 
   it('should queue tasks and execute them in order', async () => {
-    const limit = new RateLimiter(2);
+    const limit = new RateLimiter(1);
     let taskOrder: number[] = [];
-    const mockTask = async (id) => {
+    const mockTask = async (id: number) => {
       await limit.allocate();
 
       // Make each task successively longer to ensure execution completion order
-      await new Promise(resolve => setTimeout(resolve, 500 + 500*id));
+      await new Promise(resolve => setTimeout(resolve, 100 + 500 * id));
 
       taskOrder.push(id);
       limit.free();
@@ -55,15 +58,16 @@ describe('RateLimiter', () => {
       expect(limit.getProcessing()).toBeLessThanOrEqual(maxConcurrent);
 
       // Mock task duration (randomness to affect completion order)
-      await new Promise(resolve => setTimeout(resolve, 500*Math.random()));
+      await new Promise(resolve => setTimeout(resolve, 500 * Math.random()));
 
       expect(limit.getProcessing()).toBeLessThanOrEqual(maxConcurrent);
 
       limit.free();
     };
-
-    const tasks = Array(100).fill().map(_ => mockTask);
-    await Promise.all(tasks);
+    await Promise.all(Array(100)
+      .fill(0)
+      .map(_ => mockTask())
+    );
 
     expect(limit.getProcessing()).toEqual(0);
     expect(limit.getWaiting()).toEqual(0);
