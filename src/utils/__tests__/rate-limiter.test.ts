@@ -31,10 +31,11 @@ describe('RateLimiter', () => {
     let taskOrder = [];
     const mockTask = async (id) => {
       await limit.allocate();
-      taskOrder.push(id);
 
       // Mock task duration (randomness to affect completion order)
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 500 + 500*id));
+
+      taskOrder.push(id);
       limit.free();
     };
 
