@@ -3,9 +3,6 @@
   <a href="https://www.npmjs.com/package/remix-sitemap" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/remix-sitemap.svg">
   </a>
-  <a href="https://www.npmjs.com/package/remix-sitemap" target="_blank">
-    <img alt="npm" src="https://img.shields.io/npm/dt/remix-sitemap">    
-  </a>
   <a href="#" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
