@@ -13,6 +13,7 @@ import {
   deleteOldSitemaps
 } from './files';
 import { pathToFileURL } from 'url';
+import { getFlagsRef } from '../lib/flags';
 
 const findConfig = () => {
   const configPath = path.resolve(process.cwd(), 'remix-sitemap.config.js');
@@ -22,6 +23,9 @@ const findConfig = () => {
 
 async function main() {
   const configPath = findConfig();
+  const flags = getFlagsRef();
+  flags.standalone = true;
+  flags.generating = true;
 
   if (!configPath) {
     console.error('❌ No config file found');
@@ -68,6 +72,8 @@ async function main() {
   createSitemapFiles(sitemap, config);
 
   console.log('✨ Sitemap generated successfully');
+
+  flags.generating = false;
 }
 
 main();
