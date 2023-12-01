@@ -1,8 +1,9 @@
 import type { Config, Routes, EntryContext } from './lib/types';
-import { sitemapResponse } from './sitemap';
 import { isSitemapUrl, isRobotsUrl } from './utils/validations';
-import { getConfig } from './lib/config';
+import { sitemapResponse } from './sitemap';
 import { robotsResponse } from './robots';
+import { getFlagsRef } from './lib/flags';
+import { getConfig } from './lib/config';
 
 export {
   SitemapHandle,
@@ -11,6 +12,9 @@ export {
   SitemapFunction,
   SitemapArgs
 } from './lib/types';
+
+export type FlagsType = ReturnType<typeof getFlagsRef>;
+export const getFlags = () => getFlagsRef() as Readonly<FlagsType>;
 
 export const createSitemapGenerator = (config: Config) => {
   const defaultConfig = getConfig(config);
