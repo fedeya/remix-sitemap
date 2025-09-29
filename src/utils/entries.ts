@@ -8,14 +8,14 @@ export type GetEntryParams = GetSitemapParams & {
 };
 
 export async function getEntry(params: GetEntryParams) {
-  const { route, context, request, config } = params;
+  const { route, context, request, config, appContext } = params;
 
   if (!isValidEntry(route, context)) return null;
 
   const { sitemapFunction, path } = getRouteData(route, context);
 
   const sitemap = sitemapFunction
-    ? await sitemapFunction({ request, config })
+    ? await sitemapFunction({ request, config, context: appContext })
     : null;
 
   if (sitemap) {

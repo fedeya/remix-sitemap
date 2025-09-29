@@ -3,6 +3,7 @@ import { sitemapResponse } from './sitemap';
 import { isSitemapUrl, isRobotsUrl } from './utils/validations';
 import { getConfig } from './lib/config';
 import { robotsResponse } from './robots';
+import { AppLoadContext } from '@remix-run/server-runtime';
 
 export {
   SitemapHandle,
@@ -16,9 +17,9 @@ export const createSitemapGenerator = (config: Config) => {
   const defaultConfig = getConfig(config);
 
   return {
-    sitemap: (request: Request, context: EntryContext) => {
+    sitemap: (request: Request, context: EntryContext, appContext: AppLoadContext) => {
       if (isSitemapUrl(defaultConfig, request)) {
-        return sitemapResponse(defaultConfig, request, context);
+        return sitemapResponse(defaultConfig, request, context, appContext);
       }
 
       if (defaultConfig.generateRobotsTxt && isRobotsUrl(request)) {
@@ -28,7 +29,7 @@ export const createSitemapGenerator = (config: Config) => {
 
     robots: () => robotsResponse(defaultConfig),
 
-    experimental_sitemap: (request: Request, routes: Routes) => {
+    experimental_sitemap: (request: Request, routes: Routes, appContext: AppLoadContext) => {
       const routeModules = Object.keys(routes).reduce(
         (acc, route) => ({
           ...acc,
@@ -42,7 +43,7 @@ export const createSitemapGenerator = (config: Config) => {
         manifest: {
           routes
         }
-      });
+      }, appContext);
     },
 
     isSitemapUrl: (request: Request) =>

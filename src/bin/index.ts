@@ -46,7 +46,8 @@ async function main() {
         routes
       }
     },
-    request: {} as unknown as Request
+    request: {} as unknown as Request,
+    appContext: {},
   };
 
   const isSplitted = config.size && config.size > 0;

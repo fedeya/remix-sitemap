@@ -1,3 +1,5 @@
+import { AppLoadContext } from "@remix-run/server-runtime";
+
 type ChangeFreq =
   | 'never'
   | 'yearly'
@@ -95,6 +97,11 @@ export interface RemixSitemapConfig {
    * The cache to use.
    */
   cache?: Cache;
+
+  /**
+   * Exclusions to apply.
+   */
+  exclusions?: RegExp[];
 }
 
 export interface Cache {
@@ -229,6 +236,7 @@ export type Policy = {
 export interface SitemapArgs {
   config: Config;
   request: Request;
+  context: AppLoadContext;
 }
 
 export type SitemapDefinition =

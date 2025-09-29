@@ -1,10 +1,12 @@
 import type { RemixSitemapConfig, EntryContext } from './lib/types';
 import { buildSitemap } from './builders/sitemap';
+import { AppLoadContext } from '@remix-run/server-runtime';
 
 export async function sitemapResponse(
   config: RemixSitemapConfig,
   request: Request,
-  context: EntryContext
+  context: EntryContext,
+  appContext: AppLoadContext,
 ) {
   const { cache } = config;
 
@@ -27,7 +29,8 @@ export async function sitemapResponse(
   const sitemap = await buildSitemap({
     config,
     context,
-    request
+    request,
+    appContext,
   });
 
   if (cache) await cache.set(sitemap);
